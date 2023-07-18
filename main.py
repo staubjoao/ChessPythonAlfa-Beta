@@ -22,12 +22,14 @@ class ChessGame:
         self.screen = pygame.display.set_mode((width, height))
 
         self.pieces_images = {}
-        pieces = ["wp", "wr", "wn", "wb", "wq", "wk", "bp", "br", "bn", "bb", "bq", "bk"]
+        pieces = ["wp", "wr", "wn", "wb", "wq",
+                  "wk", "bp", "br", "bn", "bb", "bq", "bk"]
         for piece in pieces:
             self.pieces_images[piece] = pygame.image.load(
                 f"images/{piece}.png")
 
         self.board = chess.Board()
+        self.promotion_piece = None
 
         self.current_player = chess.WHITE
         self.selected_square = None
@@ -76,7 +78,8 @@ class ChessGame:
                     if piece.symbol().islower():
                         piece_image = self.pieces_images["b"+piece.symbol()]
                     else:
-                        piece_image = self.pieces_images["w"+piece.symbol().lower()]
+                        piece_image = self.pieces_images["w" +
+                                                         piece.symbol().lower()]
                     self.screen.blit(pygame.transform.scale(piece_image, (self.square_size, self.square_size)),
                                      (col * self.square_size, row * self.square_size))
 
@@ -92,25 +95,57 @@ class ChessGame:
                     row = pos[1] // self.square_size
                     square = chess.square(col, self.rows - 1 - row)
 
-                    if self.selected_square is None:
-                        # Se a posição inicial for válida e tiver uma peça do jogador atual
-                        piece = self.board.piece_at(square)
-                        if piece is not None and piece.color == self.current_player:
-                            self.selected_square = square
-                            self.get_valid_moves(self.selected_square)
-                    else:
-                        if square in self.valid_moves:
-                            move = chess.Move(self.selected_square, square)
-                            self.board.push(move)
-                            self.selected_square = None
-                            self.valid_moves = []
-                            self.current_player = not self.current_player
-                            if self.check_game_state():
-                                self.running = False
+                    if self.promotion_piece is None:
+                        if self.selected_square is None:
+                            # Se a posição inicial for válida e tiver uma peça do jogador atual
+                            piece = self.board.piece_at(square)
+                            if piece is not None and piece.color == self.current_player:
+                                self.selected_square = square
+                                self.get_valid_moves(self.selected_square)
                         else:
-                            self.selected_square = None
-                            self.valid_moves = []
+                            if square in self.valid_moves:
+                                move = chess.Move(self.selected_square, square)
+                                # Verifica a promoção do peão
+                                if (
+                                    self.board.piece_type_at(
+                                        self.selected_square) == chess.PAWN
+                                    and chess.square_rank(square) in [0, 7]
+                                ):
+                                    self.selected_square = None
+                                    self.valid_moves = []
+                                    self.promotion_piece = square
+                                else:
+                                    self.board.push(move)
+                                    self.selected_square = None
+                                    self.valid_moves = []
+                                    self.current_player = not self.current_player
+                                    if self.check_game_state():
+                                        self.running = False
+                            else:
+                                self.selected_square = None
+                                self.valid_moves = []
+                    else:
+                        print("teste")
+                        # Promoção do peão
+                        if square == self.promotion_piece:
+                            # Aguardar a entrada do jogador para selecionar a peça de promoção
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_q:
+                                    self.promotion_piece = chess.QUEEN
+                                elif event.key == pygame.K_r:
+                                    self.promotion_piece = chess.ROOK
+                                elif event.key == pygame.K_n:
+                                    self.promotion_piece = chess.KNIGHT
+                                elif event.key == pygame.K_b:
+                                    self.promotion_piece = chess.BISHOP
 
+                                if self.promotion_piece is not None:
+                                    # Fazer a promoção do peão para a nova peça selecionada
+                                    self.board.promote(square, promotion_piece)
+                                    promotion_piece = None
+                                    current_player = not current_player
+                                    if self.check_game_state():
+                                        self.running = False
             # Desenhar o tabuleiro
             self.desenhar_tabuleiro()
 
