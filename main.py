@@ -22,7 +22,7 @@ class ChessGame:
         self.screen = pygame.display.set_mode((width, height))
 
         self.pieces_images = {}
-        pieces = ["P", "R", "N", "B", "Q", "K", "p", "r", "n", "b", "q", "k"]
+        pieces = ["wp", "wr", "wn", "wb", "wq", "wk", "bp", "br", "bn", "bb", "bq", "bk"]
         for piece in pieces:
             self.pieces_images[piece] = pygame.image.load(
                 f"images/{piece}.png")
@@ -73,7 +73,10 @@ class ChessGame:
                 piece = self.board.piece_at(
                     chess.square(col, self.rows - 1 - row))
                 if piece is not None:
-                    piece_image = self.pieces_images[piece.symbol()]
+                    if piece.symbol().islower():
+                        piece_image = self.pieces_images["b"+piece.symbol()]
+                    else:
+                        piece_image = self.pieces_images["w"+piece.symbol().lower()]
                     self.screen.blit(pygame.transform.scale(piece_image, (self.square_size, self.square_size)),
                                      (col * self.square_size, row * self.square_size))
 
