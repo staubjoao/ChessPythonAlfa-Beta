@@ -79,21 +79,17 @@ class ChessGame:
         self.current_player = not self.current_player
 
     def get_promotion_piece(self):
-        print("teste")
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                print("teste")
-                if event.key == pygame.K_q:
-                    promotion_piece = chess.QUEEN
-                elif event.key == pygame.K_r:
-                    promotion_piece = chess.ROOK
-                elif event.key == pygame.K_n:
-                    promotion_piece = chess.KNIGHT
-                elif event.key == pygame.K_b:
-                    promotion_piece = chess.BISHOP
-                else:
-                    self.promotion_piece()
-                print(promotion_piece)
+        peca_selecionada = input("Digite a peça que deseja selecionar (q, r, n ou b): ")
+        if peca_selecionada == "q":
+            promotion_piece = chess.Piece(chess.QUEEN, self.current_player)
+        elif peca_selecionada == "r":
+            promotion_piece = chess.Piece(chess.ROOK, self.current_player)
+        elif peca_selecionada == "n":
+            promotion_piece = chess.Piece(chess.KNIGHT, self.current_player)
+        elif peca_selecionada == "b":
+            promotion_piece = chess.Piece(chess.BISHOP, self.current_player)
+        else:
+            self.promotion_piece()
         return promotion_piece
 
     def desenhar_tabuleiro(self):
@@ -159,8 +155,8 @@ class ChessGame:
                                     self.selected_square) == chess.PAWN
                                 and chess.square_rank(square) in [0, 7]
                             ):
-                                print("teste2")
                                 promotion_piece = self.get_promotion_piece()
+                                print(promotion_piece)
                                 if promotion_piece is not None:
                                     # Executar a promoção do peão
                                     self.perform_promotion(
