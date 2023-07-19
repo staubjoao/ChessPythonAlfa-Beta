@@ -19,22 +19,85 @@ class ChessGame:
         self.tabuleiro = chess.Board()
         self.jogador_atual = chess.WHITE
         self.quadrado_selecionado = None
-        self.movimentos_validos = []
         self.screen = pygame.display.set_mode((largura, altura))
+        self.movimentos_validos = []
         self.imagens_pecas = {}
         self.setPecas()
         pygame.init()
 
+    def getMovimentosCorAtual(self):
+        self.movimentos_cor = []
+
+        for move in self.tabuleiro.legal_moves:
+            if self.tabuleiro.piece_at(move.from_square).color == self.jogador_atual:
+                self.movimentos_cor.append(move)
+
+    def evaluate(self):
+        if self.tabuleiro.is_checkmate():
+            if self.jogador_atual:
+                return -1
+            else:
+                return 1
+        elif self.tabuleiro.is_insufficient_material() or self.tabuleiro.is_stalemate():
+            return 0
+
+    def minmax(self, depth, alpha, beta, maximizing_player):
+        if depth == 0 or self.tabuleiro.is_game_over():
+            return self.evaluate()
+
+        if maximizing_player:
+            max_eval = float('-inf')
+            self.getMovimentosCorAtual()
+            for move in self.movimentos_cor:
+                self.tabuleiro.push(move)
+                eval = self.minmax(depth - 1, alpha, beta, False)
+                self.tabuleiro.pop()
+                max_eval = max(max_eval, eval)
+                alpha = max(alpha, eval)
+                if beta <= alpha:
+                    break
+            return max_eval
+        else:
+            min_eval = float('inf')
+            self.getMovimentosCorAtual()
+            for move in self.movimentos_cor:
+                self.tabuleiro.push(move)
+                eval = self.minmax(depth - 1, alpha, beta, True)
+                self.tabuleiro.pop()
+                min_eval = min(min_eval, eval)
+                beta = min(beta, eval)
+                if beta <= alpha:
+                    break
+            return min_eval
+
+    def choose_best_move(self, depth):
+        best_eval = float('-inf')
+        best_move = None
+        alpha = float('-inf')
+        beta = float('inf')
+
+        self.getMovimentosCorAtual()
+        for move in self.movimentos_cor:
+            self.tabuleiro.push(move)
+            eval = self.minmax(depth - 1, alpha, beta, False)
+            self.tabuleiro.pop()
+
+            if eval > best_eval:
+                best_eval = eval
+                best_move = move
+
+        return best_move
+
     def setPecas(self):
         pecas = ["wp", "wr", "wn", "wb", "wq",
-                        "wk", "bp", "br", "bn", "bb", "bq", "bk"]
+                 "wk", "bp", "br", "bn", "bb", "bq", "bk"]
         for p in pecas:
             self.imagens_pecas[p] = pygame.image.load(f"images/{p}.png")
 
-    def getMovimentosValidos(self, square):
+    def getMovimentosValidos(self):
         self.movimentos_validos = []
         for movimento in self.tabuleiro.legal_moves:
-            if movimento.from_square == square:
+            if movimento.from_square == self.quadrado_selecionado:
                 self.movimentos_validos.append(movimento.to_square)
 
     def checarEstadoJogo(self):
@@ -76,7 +139,8 @@ class ChessGame:
         self.jogador_atual = not self.jogador_atual
 
     def getPecaPromocao(self):
-        peca_selecionada = input("Digite a peça que deseja selecionar (q, r, n ou b): ")
+        peca_selecionada = input(
+            "Digite a peça que deseja selecionar (q, r, n ou b): ")
         if peca_selecionada == "q":
             promotion_piece = chess.Piece(chess.QUEEN, self.jogador_atual)
         elif peca_selecionada == "r":
@@ -123,55 +187,65 @@ class ChessGame:
 
     def loopGame(self):
         while self.rodando:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.rodando = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    # Obtendo a posição do clique do mouse
-                    pos = pygame.mouse.get_pos()
-                    col = pos[0] // self.tamanho_quadrado
-                    row = pos[1] // self.tamanho_quadrado
-                    square = chess.square(col, self.linhas - 1 - row)
+            if self.jogador_atual:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        self.rodando = False
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        # Obtendo a posição do clique do mouse
+                        pos = pygame.mouse.get_pos()
+                        col = pos[0] // self.tamanho_quadrado
+                        row = pos[1] // self.tamanho_quadrado
+                        square = chess.square(col, self.linhas - 1 - row)
 
-                    if self.quadrado_selecionado is None:
-                        # Se a posição inicial for válida e tiver uma peça do jogador atual
-                        piece = self.tabuleiro.piece_at(square)
-                        if piece is not None and piece.color == self.jogador_atual:
-                            self.quadrado_selecionado = square
-                            self.getMovimentosValidos(self.quadrado_selecionado)
-                    else:
-                        if square in self.movimentos_validos:
-                            move = chess.Move(self.quadrado_selecionado, square)
+                        if self.quadrado_selecionado is None:
+                            # Se a posição inicial for válida e tiver uma peça do jogador atual
+                            piece = self.tabuleiro.piece_at(square)
+                            if piece is not None and piece.color == self.jogador_atual:
+                                self.quadrado_selecionado = square
+                                self.getMovimentosValidos()
+                        else:
+                            if square in self.movimentos_validos:
+                                move = chess.Move(
+                                    self.quadrado_selecionado, square)
 
-                            if self.tabuleiro.is_castling(move):
-                                self.movimentoRoque(move)
-                            elif self.tabuleiro.is_en_passant(move):
-                                self.enPassantMovimento(move)
-                            elif (
-                                self.tabuleiro.piece_type_at(
-                                    self.quadrado_selecionado) == chess.PAWN
-                                and chess.square_rank(square) in [0, 7]
-                            ):
-                                promotion_piece = self.getPecaPromocao()
-                                print(promotion_piece)
-                                if promotion_piece is not None:
-                                    # Executar a promoção do peão
-                                    self.promocaoPeao(
-                                        move, promotion_piece)
-                                    promotion_piece = None
+                                if self.tabuleiro.is_castling(move):
+                                    self.movimentoRoque(move)
+                                elif self.tabuleiro.is_en_passant(move):
+                                    self.enPassantMovimento(move)
+                                elif (
+                                    self.tabuleiro.piece_type_at(
+                                        self.quadrado_selecionado) == chess.PAWN
+                                    and chess.square_rank(square) in [0, 7]
+                                ):
+                                    promotion_piece = self.getPecaPromocao()
+                                    print(promotion_piece)
+                                    if promotion_piece is not None:
+                                        # Executar a promoção do peão
+                                        self.promocaoPeao(
+                                            move, promotion_piece)
+                                        promotion_piece = None
+                                        if self.checarEstadoJogo():
+                                            self.rodando = False
+                                else:
+                                    self.tabuleiro.push(move)
+                                    self.quadrado_selecionado = None
+                                    self.movimentos_validos = []
+                                    self.jogador_atual = not self.jogador_atual
                                     if self.checarEstadoJogo():
                                         self.rodando = False
                             else:
-                                self.tabuleiro.push(move)
                                 self.quadrado_selecionado = None
                                 self.movimentos_validos = []
-                                self.jogador_atual = not self.jogador_atual
-                                if self.checarEstadoJogo():
-                                    self.rodando = False
-                        else:
-                            self.quadrado_selecionado = None
-                            self.movimentos_validos = []
-
+            else:
+                depth = 3
+                best_move = self.choose_best_move(depth)
+                self.tabuleiro.push(best_move)
+                self.quadrado_selecionado = None
+                self.movimentos_validos = []
+                self.jogador_atual = not self.jogador_atual
+                if self.checarEstadoJogo():
+                    self.rodando = False
             # Desenhar o tabuleiro
             self.desenharTabuleiro()
 
