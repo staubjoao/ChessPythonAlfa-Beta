@@ -11,7 +11,7 @@ VALID_MOVE_COLOR = (100, 100, 100)
 
 class Inteligencia:
     def __init__(self):
-        self.peaoTabuleiro = [
+        self.peaoTabuleiro = np.array([
             0, 0, 0, 0, 0, 0, 0, 0,
             5, 10, 10, -20, -20, 10, 10, 5,
             5, -5, -10, 0, 0, -10, -5, 5,
@@ -19,7 +19,7 @@ class Inteligencia:
             5, 5, 10, 25, 25, 10, 5, 5,
             10, 10, 20, 30, 30, 20, 10, 10,
             50, 50, 50, 50, 50, 50, 50, 50,
-            0, 0, 0, 0, 0, 0, 0, 0]
+            0, 0, 0, 0, 0, 0, 0, 0])
 
         self.cavaloTabuleiro = [
             -50, -40, -30, -30, -30, -30, -40, -50,
@@ -102,7 +102,14 @@ class Inteligencia:
         material = 100 * (wp - bp) + 320 * (wn - bn) + 330 * (wb - bb) + 500 * (wr - br) + 900 * (wq - bq)
 
         pawnsq = sum([self.peaoTabuleiro[i] for i in tabuleiro.pieces(chess.PAWN, chess.WHITE)])
-        print(pawnsq)
+        peoesTabuleiroBranco = tabuleiro.pieces(chess.PAWN, chess.WHITE)
+        print(type(peoesTabuleiroBranco))
+        teste = np.array(peoesTabuleiroBranco)
+        print(teste)
+        for i in peoesTabuleiroBranco:
+            print(i)
+        soma_peoes = np.sum(self.peaoTabuleiro[np.array(tabuleiro.pieces(chess.PAWN, chess.WHITE))])
+        print(pawnsq == soma_peoes)
         pawnsq = pawnsq + sum([-self.peaoTabuleiro[chess.square_mirror(i)]
                                     for i in tabuleiro.pieces(chess.PAWN, chess.BLACK)])
         knightsq = sum([self.cavaloTabuleiro[i] for i in tabuleiro.pieces(chess.KNIGHT, chess.WHITE)])
