@@ -1,0 +1,4 @@
+O ganhador foram as peças pretas
+O número de jogadas das peças pretas foi de 9
+O número de jogadas das peças brancas foi de 9
+Peças brancas capturadas: Peças pretas capturadas: 

@@ -9,19 +9,27 @@ VALID_MOVE_COLOR = (100, 100, 100)
 
 
 class ChessGame:
-    def __init__(self, largura, altura, linhas, colunas):
+    def __init__(self, largura, altura, linhas, colunas, cor_jogador, nome_jogador):
         self.largura = largura
         self.altura = altura
         self.linhas = linhas
         self.colunas = colunas
         self.tamanho_quadrado = largura // colunas
+        self.cor_jogador = cor_jogador
+        self.cor_inteligencia = not self.cor_jogador
+        self.nome_jogador = nome_jogador
         self.rodando = True
         self.tabuleiro = chess.Board()
         self.jogador_atual = chess.WHITE
+        self.desistencia = False
         self.quadrado_selecionado = None
         self.screen = pygame.display.set_mode((largura, altura))
         self.movimentos_validos = []
         self.imagens_pecas = {}
+        self.numero_jogadas_pretas = 0
+        self.numero_jogadas_brancas = 0
+        self.pecas_capturadas_brancas = []
+        self.pecas_capturadas_pretas = []
         self.setPecas()
         pygame.init()
 
@@ -37,12 +45,24 @@ class ChessGame:
             if movimento.from_square == self.quadrado_selecionado:
                 self.movimentos_validos.append(movimento.to_square)
 
+    def desistir(self):
+        self.surrendered = True
+        if self.jogador_atual == chess.WHITE:
+            print("Jogador Preto venceu por desistência.")
+        else:
+            print("Jogador Branco venceu por desistência.")
+
     def checarEstadoJogo(self):
         if self.tabuleiro.is_checkmate():
             print("Xeque-mate!")
+            if self.jogador_atual:
+                self.ganhador = 1
+            else:
+                self.ganhador = 0
             return True
         elif self.tabuleiro.is_insufficient_material() or self.tabuleiro.is_stalemate():
             print("Empate!")
+            self.ganhador = 2
             return True
         else:
             return False
@@ -90,6 +110,14 @@ class ChessGame:
             self.promotion_piece()
         return promotion_piece
 
+    def desenharBotaoDesistir(self):
+        font = pygame.font.Font(None, 36)
+        button_text = font.render("Desistir", True, (255, 255, 255))
+        button_rect = button_text.get_rect(
+            center=(self.largura // 2, self.altura - 30))
+        pygame.draw.rect(self.screen, (255, 0, 0), button_rect)
+        self.screen.blit(button_text, button_rect)
+
     def desenharTabuleiro(self):
         for row in range(self.linhas):
             for col in range(self.colunas):
@@ -121,72 +149,117 @@ class ChessGame:
                                                          piece.symbol().lower()]
                     self.screen.blit(pygame.transform.scale(piece_image, (self.tamanho_quadrado, self.tamanho_quadrado)),
                                      (col * self.tamanho_quadrado, row * self.tamanho_quadrado))
+        self.desenharBotaoDesistir()
 
-    def loopGame(self):
-        while self.rodando:
-            if self.jogador_atual:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.rodando = False
-                    elif event.type == pygame.MOUSEBUTTONDOWN:
-                        # Obtendo a posição do clique do mouse
-                        pos = pygame.mouse.get_pos()
-                        col = pos[0] // self.tamanho_quadrado
-                        row = pos[1] // self.tamanho_quadrado
-                        square = chess.square(col, self.linhas - 1 - row)
+    def getJogadaHumano(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.rodando = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # Obtendo a posição do clique do mouse
+                pos = pygame.mouse.get_pos()
+                col = pos[0] // self.tamanho_quadrado
+                row = pos[1] // self.tamanho_quadrado
+                square = chess.square(col, self.linhas - 1 - row)
 
-                        if self.quadrado_selecionado is None:
-                            # Se a posição inicial for válida e tiver uma peça do jogador atual
-                            piece = self.tabuleiro.piece_at(square)
-                            if piece is not None and piece.color == self.jogador_atual:
-                                self.quadrado_selecionado = square
-                                self.getMovimentosValidos()
-                        else:
-                            if square in self.movimentos_validos:
-                                move = chess.Move(
-                                    self.quadrado_selecionado, square)
-
-                                if self.tabuleiro.is_castling(move):
-                                    self.movimentoRoque(move)
-                                elif self.tabuleiro.is_en_passant(move):
-                                    self.enPassantMovimento(move)
-                                elif (
-                                    self.tabuleiro.piece_type_at(
-                                        self.quadrado_selecionado) == chess.PAWN
-                                    and chess.square_rank(square) in [0, 7]
-                                ):
-                                    promotion_piece = self.getPecaPromocao()
-                                    print(promotion_piece)
-                                    if promotion_piece is not None:
-                                        # Executar a promoção do peão
-                                        self.promocaoPeao(
-                                            move, promotion_piece)
-                                        promotion_piece = None
-                                        if self.checarEstadoJogo():
-                                            self.rodando = False
-                                else:
-                                    self.tabuleiro.push(move)
-                                    self.quadrado_selecionado = None
-                                    self.movimentos_validos = []
-                                    self.jogador_atual = not self.jogador_atual
+                if self.largura // 2 - 50 <= pos[0] <= self.largura // 2 + 50 and self.altura - 75 <= pos[1] <= self.altura - 25:
+                    self.button_clicked = True
+                    self.ganhador = 0 if self.cor_jogador else 1
+                    self.rodando = False
+                else:
+                    if self.quadrado_selecionado is None:
+                        # Se a posição inicial for válida e tiver uma peça do jogador atual
+                        piece = self.tabuleiro.piece_at(square)
+                        if piece is not None and piece.color == self.jogador_atual:
+                            self.quadrado_selecionado = square
+                            self.getMovimentosValidos()
+                    else:
+                        if square in self.movimentos_validos:
+                            move = chess.Move(
+                                self.quadrado_selecionado, square)
+                            if self.tabuleiro.is_castling(move):
+                                self.movimentoRoque(move)
+                            elif self.tabuleiro.is_en_passant(move):
+                                self.enPassantMovimento(move)
+                            elif (
+                                self.tabuleiro.piece_type_at(
+                                    self.quadrado_selecionado) == chess.PAWN
+                                and chess.square_rank(square) in [0, 7]
+                            ):
+                                promotion_piece = self.getPecaPromocao()
+                                print(promotion_piece)
+                                if promotion_piece is not None:
+                                    # Executar a promoção do peão
+                                    self.promocaoPeao(
+                                        move, promotion_piece)
+                                    promotion_piece = None
                                     if self.checarEstadoJogo():
                                         self.rodando = False
                             else:
+                                self.tabuleiro.push(move)
                                 self.quadrado_selecionado = None
                                 self.movimentos_validos = []
+                                self.jogador_atual = not self.jogador_atual
+                                if self.checarEstadoJogo():
+                                    self.rodando = False
+                                if self.cor_jogador:
+                                    self.numero_jogadas_brancas += 1
+                                else:
+                                    self.numero_jogadas_pretas += 1
+                        else:
+                            self.quadrado_selecionado = None
+                            self.movimentos_validos = []
+
+    def salvarArquivoLog(self):
+        try:
+            with open(self.nome_jogador+'.txt', 'w') as file:
+                cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
+                file.write(f"O ganhador foram as peças {cor_ganhador} ")
+                if self.cor_inteligencia:
+                    if cor_ganhador == "brancas":
+                        file.write("a inteligencia desenvolvida ganhou!")
+                    
+                file.write(
+                    f"O número de jogadas das peças pretas foi de {self.numero_jogadas_pretas}\n")
+                file.write(
+                    f"O número de jogadas das peças brancas foi de {self.numero_jogadas_brancas}\n")
+                file.write("Peças brancas capturadas: ")
+                for i, j in enumerate(self.pecas_capturadas_brancas):
+                    if j == len(self.pecas_capturadas_brancas) - 1:
+                        file.write(f"{i}\n")
+                    else:
+                        file.write(f"{i}, ")
+                file.write("Peças pretas capturadas: ")
+                for i, j in enumerate(self.pecas_capturadas_pretas):
+                    if j == len(self.pecas_capturadas_pretas) - 1:
+                        file.write(f"{i}\n")
+                    else:
+                        file.write(f"{i}, ")
+        except Exception as e:
+            print(f"Erro ao abrir o arquivo: {e}")
+
+    def loopGame(self):
+        ia = ChessIA()
+        while self.rodando:
+            if self.cor_jogador == self.jogador_atual:
+                self.getJogadaHumano()
             else:
-                ia = ChessIA()
-                best_move = ia.fazerMovimento(2, self.tabuleiro)
+                best_move = ia.fazerMovimento(3, self.tabuleiro)
                 self.tabuleiro.push(best_move)
                 self.quadrado_selecionado = None
                 self.movimentos_validos = []
                 self.jogador_atual = not self.jogador_atual
+                if self.cor_jogador:
+                    self.numero_jogadas_pretas += 1
+                else:
+                    self.numero_jogadas_brancas += 1
                 if self.checarEstadoJogo():
                     self.rodando = False
             # Desenhar o tabuleiro
             self.desenharTabuleiro()
 
             pygame.display.flip()
+        self.salvarArquivoLog()
         self.finalizar()
 
     def finalizar(self):
