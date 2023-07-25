@@ -1,4 +1,37 @@
-O ganhador foram as peças pretas
-O número de jogadas das peças pretas foi de 9
-O número de jogadas das peças brancas foi de 9
-Peças brancas capturadas: Peças pretas capturadas: 
+A inteligencia estava jogando com as brancas
+O ganhador foram as pretas
+Jogadas brancas:
+g1f3, 139
+b1c3, 139
+e2e4, 139
+e4e5, 139
+f3d2, 136
+e5f6, 133
+d1g4, 132
+g4e4, 132
+e4a8, 127
+f1g2, 122
+a8b8, 119
+b8a7, 118
+a7c5, 117
+c3d5, 116
+c5c3, 116
+c3e5, 115
+e5e7, 6
+Jogadas pretas:
+g8f6, 139
+g7g6, 139
+f8h6, 139
+h6d2, 138
+g6g5, 138
+g5g4, 138
+b7b6, 138
+h8g8, 138
+g8g2, 137
+b6b5, 137
+c7c5, 137
+d7d5, 137
+e7e5, 137
+h7h6, 137
+h6h5, 137
+d8e7, 137
