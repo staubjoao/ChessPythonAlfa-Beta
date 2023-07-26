@@ -66,12 +66,7 @@ class ChessIA:
             -30, -40, -40, -50, -50, -40, -40, -30]
 
     def getMovimentosCorAtual(self, tabuleiro):
-        movimentos_cor = []
-
-        for move in tabuleiro.legal_moves:
-            if tabuleiro.piece_at(move.from_square).color == tabuleiro.turn:
-                movimentos_cor.append(move)
-        return movimentos_cor
+        return tabuleiro.legal_moves
 
     def avaliarTabuleiro(self, tabuleiro):
         if tabuleiro.is_checkmate():
@@ -96,73 +91,71 @@ class ChessIA:
         material = 100 * (wp - bp) + 320 * (wn - bn) + 330 * \
             (wb - bb) + 500 * (wr - br) + 900 * (wq - bq)
 
-        pawnsq = sum([self.peaoTabuleiro[i]
+        peaosq = sum([self.peaoTabuleiro[i]
                      for i in tabuleiro.pieces(chess.PAWN, chess.WHITE)])
-        pawnsq = pawnsq + sum([-self.peaoTabuleiro[chess.square_mirror(i)]
+        peaosq = peaosq + sum([-self.peaoTabuleiro[chess.square_mirror(i)]
                               for i in tabuleiro.pieces(chess.PAWN, chess.BLACK)])
-        knightsq = sum([self.cavaloTabuleiro[i]
+        cavalosq = sum([self.cavaloTabuleiro[i]
                        for i in tabuleiro.pieces(chess.KNIGHT, chess.WHITE)])
-        knightsq = knightsq + sum([-self.cavaloTabuleiro[chess.square_mirror(i)]
+        cavalosq = cavalosq + sum([-self.cavaloTabuleiro[chess.square_mirror(i)]
                                   for i in tabuleiro.pieces(chess.KNIGHT, chess.BLACK)])
-        bishopsq = sum([self.bispoTabuleiro[i]
+        bisposq = sum([self.bispoTabuleiro[i]
                        for i in tabuleiro.pieces(chess.BISHOP, chess.WHITE)])
-        bishopsq = bishopsq + sum([-self.bispoTabuleiro[chess.square_mirror(i)]
-                                   for i in tabuleiro.pieces(chess.BISHOP, chess.BLACK)])
-        rooksq = sum([self.torreTabuleiro[i]
-                     for i in tabuleiro.pieces(chess.ROOK, chess.WHITE)])
-        rooksq = rooksq + sum([-self.torreTabuleiro[chess.square_mirror(i)]
-                               for i in tabuleiro.pieces(chess.ROOK, chess.BLACK)])
-        queensq = sum([self.rainhaTabuleiro[i]
-                      for i in tabuleiro.pieces(chess.QUEEN, chess.WHITE)])
-        queensq = queensq + sum([-self.rainhaTabuleiro[chess.square_mirror(i)]
-                                 for i in tabuleiro.pieces(chess.QUEEN, chess.BLACK)])
-        kingsq = sum([self.reiTabuleiro[i]
+        bisposq = bisposq + sum([-self.bispoTabuleiro[chess.square_mirror(i)]
+                                 for i in tabuleiro.pieces(chess.BISHOP, chess.BLACK)])
+        torresq = sum([self.torreTabuleiro[i]
+                       for i in tabuleiro.pieces(chess.ROOK, chess.WHITE)])
+        torresq = torresq + sum([-self.torreTabuleiro[chess.square_mirror(i)]
+                                 for i in tabuleiro.pieces(chess.ROOK, chess.BLACK)])
+        rainhasq = sum([self.rainhaTabuleiro[i]
+                        for i in tabuleiro.pieces(chess.QUEEN, chess.WHITE)])
+        rainhasq = rainhasq + sum([-self.rainhaTabuleiro[chess.square_mirror(i)]
+                                   for i in tabuleiro.pieces(chess.QUEEN, chess.BLACK)])
+        reisq = sum([self.reiTabuleiro[i]
                      for i in tabuleiro.pieces(chess.KING, chess.WHITE)])
-        kingsq = kingsq + sum([-self.reiTabuleiro[chess.square_mirror(i)]
-                               for i in tabuleiro.pieces(chess.KING, chess.BLACK)])
+        reisq = reisq + sum([-self.reiTabuleiro[chess.square_mirror(i)]
+                             for i in tabuleiro.pieces(chess.KING, chess.BLACK)])
 
-        eval = material + pawnsq + knightsq + bishopsq + rooksq + queensq + kingsq
+        eval = material + peaosq + cavalosq + bisposq + torresq + rainhasq + reisq
         if tabuleiro.turn:
             return eval
         else:
             return -eval
 
     def quiesce(self, alpha, beta, tabuleiro):
-        stand_pat = self.avaliarTabuleiro(tabuleiro)
-        if (stand_pat >= beta):
+        aux = self.avaliarTabuleiro(tabuleiro)
+        if (aux >= beta):
             return beta
-        if (stand_pat > alpha):
-            alpha = stand_pat
+        if (aux > alpha):
+            alpha = aux
 
-        for move in tabuleiro.legal_moves:
-            if tabuleiro.is_capture(move):
-                tabuleiro.push(move)
-                score = -self.quiesce(-beta, -alpha, tabuleiro)
+        for movimento in self.getMovimentosCorAtual(tabuleiro):
+            if tabuleiro.is_capture(movimento):
+                tabuleiro.push(movimento)
+                avalicao = -self.quiesce(-beta, -alpha, tabuleiro)
                 tabuleiro.pop()
-                if (score >= beta):
+                if (avalicao >= beta):
                     return beta
-                if (score > alpha):
-                    alpha = score
+                alpha = max(avalicao, alpha)
         return alpha
 
     def alphabeta(self, alpha, beta, profundidadeleft, tabuleiro):
-        bestscore = float('-inf')
+        melhor_avaliacao = float('-inf')
         if (profundidadeleft == 0):
             resultado = self.quiesce(alpha, beta, tabuleiro)
 
             return resultado
-        for move in tabuleiro.legal_moves:
-            tabuleiro.push(move)
-            score = -self.alphabeta(-beta, -alpha,
-                                    profundidadeleft - 1, tabuleiro)
+        for movimento in self.getMovimentosCorAtual(tabuleiro):
+            tabuleiro.push(movimento)
+            avalicao = -self.alphabeta(-beta, -alpha,
+                                       profundidadeleft - 1, tabuleiro)
             tabuleiro.pop()
-            if (score >= beta):
-                return score
-            if (score > bestscore):
-                bestscore = score
-            if (score > alpha):
-                alpha = score
-        return bestscore
+            if (avalicao >= beta):
+                return avalicao
+            if (avalicao > melhor_avaliacao):
+                melhor_avaliacao = avalicao
+            alpha = max(avalicao, alpha)
+        return melhor_avaliacao
 
     def escolherMelhorMovimento(self, profundidade, tabuleiro):
         melhorAvaliacao = float('-inf')

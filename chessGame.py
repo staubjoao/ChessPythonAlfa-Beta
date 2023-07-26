@@ -17,6 +17,7 @@ class ChessGame:
         self.tamanho_quadrado = largura // colunas
         self.cor_jogador = cor_jogador
         self.nome_jogador = nome_jogador
+        self.button_clicked = False
         self.rodando = True
         self.tabuleiro = chess.Board()
         self.jogador_atual = chess.WHITE
@@ -230,10 +231,15 @@ class ChessGame:
                             self.movimentos_validos = []
 
     def salvarArquivoLog(self):
+        print(self.nome_jogador)
         try:
-            with open(self.nome_jogador+'.txt', 'w') as file:
+            with open(f"avaliacao/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
+                if self.button_clicked:
+                    file.write("O jogador desistiu!\n")
+                else:
+                    file.write("O jogador jogou até o fim!\n")
                 file.write(
                     f"A inteligencia estava jogando com as {cor_inteligencia}\n")
                 file.write(f"O ganhador foram as {cor_ganhador}\n")
