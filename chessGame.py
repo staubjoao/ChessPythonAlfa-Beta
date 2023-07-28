@@ -70,9 +70,9 @@ class ChessGame:
         if self.tabuleiro.is_checkmate():
             print("Xeque-mate!")
             if self.jogador_atual:
-                self.ganhador = 0
-            else:
                 self.ganhador = 1
+            else:
+                self.ganhador = 0
             return True
         elif self.tabuleiro.is_insufficient_material() or self.tabuleiro.is_stalemate():
             print("Empate!")

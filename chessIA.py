@@ -5,6 +5,8 @@ import time
 
 class ChessIA:
     def __init__(self):
+        self.tabela_transposicao = {}
+
         self.peaoTabuleiro = [
             0, 0, 0, 0, 0, 0, 0, 0,
             5, 10, 10, -20, -20, 10, 10, 5,
@@ -65,7 +67,7 @@ class ChessIA:
             -30, -40, -40, -50, -50, -40, -40, -30,
             -30, -40, -40, -50, -50, -40, -40, -30]
 
-    def getMovimentosCorAtual(self, tabuleiro):
+    def getMovimentos(self, tabuleiro):
         return tabuleiro.legal_moves
 
     def avaliarTabuleiro(self, tabuleiro):
@@ -122,6 +124,9 @@ class ChessIA:
         else:
             return -eval
 
+    def getMovimentoTabuleiro(self, tabuleiro):
+        return str(tabuleiro.fen())
+
     def quiesce(self, alpha, beta, tabuleiro):
         aux = self.avaliarTabuleiro(tabuleiro)
         if (aux >= beta):
@@ -129,7 +134,10 @@ class ChessIA:
         if (aux > alpha):
             alpha = aux
 
-        for movimento in self.getMovimentosCorAtual(tabuleiro):
+        chave_posicao = self.getMovimentoTabuleiro(tabuleiro)
+        if chave_posicao in self.tabela_transposicao:
+            return self.tabela_transposicao[chave_posicao]
+        for movimento in self.getMovimentos(tabuleiro):
             if tabuleiro.is_capture(movimento):
                 tabuleiro.push(movimento)
                 avalicao = -self.quiesce(-beta, -alpha, tabuleiro)
@@ -137,15 +145,15 @@ class ChessIA:
                 if (avalicao >= beta):
                     return beta
                 alpha = max(avalicao, alpha)
+        self.tabela_transposicao[chave_posicao] = alpha
         return alpha
 
     def alphabeta(self, alpha, beta, profundidadeleft, tabuleiro):
-        melhor_avaliacao = float('-inf')
-        if (profundidadeleft == 0):
-            resultado = self.quiesce(alpha, beta, tabuleiro)
+        if profundidadeleft == 0:
+            return self.quiesce(alpha, beta, tabuleiro)
 
-            return resultado
-        for movimento in self.getMovimentosCorAtual(tabuleiro):
+        melhor_avaliacao = float('-inf')
+        for movimento in self.getMovimentos(tabuleiro):
             tabuleiro.push(movimento)
             avalicao = -self.alphabeta(-beta, -alpha,
                                        profundidadeleft - 1, tabuleiro)
@@ -163,7 +171,7 @@ class ChessIA:
         alpha = float('-inf')
         beta = float('inf')
 
-        for movimento in self.getMovimentosCorAtual(tabuleiro):
+        for movimento in self.getMovimentos(tabuleiro):
             tabuleiro.push(movimento)
             avaliacao = -self.alphabeta(-beta, -
                                         alpha, profundidade-1, tabuleiro)
