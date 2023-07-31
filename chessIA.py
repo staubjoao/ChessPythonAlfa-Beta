@@ -68,6 +68,10 @@ class ChessIA:
             -30, -40, -40, -50, -50, -40, -40, -30]
 
     def getMovimentos(self, tabuleiro):
+        # movimentos = []
+        # for movimento in tabuleiro.legal_moves:
+        #     if tabuleiro.piece_at(movimento.from_square).color == cor:
+        #         movimentos.append(movimento)
         return tabuleiro.legal_moves
 
     def avaliarTabuleiro(self, tabuleiro):
