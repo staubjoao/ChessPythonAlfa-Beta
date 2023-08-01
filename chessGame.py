@@ -261,14 +261,17 @@ class ChessGame:
                 self.getJogadaHumano()
             else:
                 best_move = ia.fazerMovimento(3, self.tabuleiro)
-                self.tabuleiro.push(best_move)
-                self.quadrado_selecionado = None
-                self.movimentos_validos = []
-                self.setJogada(not self.cor_jogador, best_move)
-                if self.checarEstadoJogo():
-                    self.rodando = False
+                if best_move != None:
+                    self.tabuleiro.push(best_move)
+                    self.quadrado_selecionado = None
+                    self.movimentos_validos = []
+                    self.setJogada(not self.cor_jogador, best_move)
+                    if self.checarEstadoJogo():
+                        self.rodando = False
+                    else:
+                        self.jogador_atual = not self.jogador_atual
                 else:
-                    self.jogador_atual = not self.jogador_atual
+                    self.rodando = False
 
             # Desenhar o tabuleiro
             self.desenharTabuleiro()
@@ -276,6 +279,29 @@ class ChessGame:
             pygame.display.flip()
         self.salvarArquivoLog()
         self.finalizar()
+
+    # def loopGameStockFish(self):
+    #     count = 0
+    #     movehistory = []
+    #     game = chess.pgn.Game()
+    #     board = chess.Board()
+    #     engine = chess.engine.SimpleEngine.popen_uci("./stockfish/src/")
+    #     while not board.is_game_over(claim_draw=True):
+    #         if board.turn:
+    #             count += 1
+    #             print(f'\n{count}]\n')
+    #             move = engine.play(board, chess.engine.Limit(time=0.1))
+    #             movehistory.append(move.move)
+    #             board.push(move.move)
+    #             print(board)
+    #         else:
+    #             move = selectmove(3)
+    #             movehistory.append(move)
+    #             board.push(move)
+    #             print(board)
+    #     game.add_line(movehistory)
+    #     game.headers["Result"] = str(board.result(claim_draw=True))
+    #     print(game)
 
     def finalizar(self):
         # Finalizando o pygame
