@@ -1,8 +1,0 @@
-O jogador desistiu!
-A inteligencia estava jogando com as brancas
-O ganhador foram as brancas
-Jogadas brancas:
-e2e4, 139
-e4f5, 138
-Jogadas pretas:
-f7f5, 139
