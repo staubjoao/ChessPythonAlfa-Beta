@@ -1,17 +1,8 @@
-O jogador jogou at� o fim!
-A inteligencia estava jogando com as pretas
-O ganhador foram as pretas
+O jogador desistiu!
+A inteligencia estava jogando com as brancas
+O ganhador foram as brancas
 Jogadas brancas:
-g2g4, 139
-g1h3, 139
-h3g5, 139
-f1g2, 139
-g2d5, 138
-b1a3, 138
+e2e4, 139
+e4f5, 138
 Jogadas pretas:
-d7d5, 139
-c8g4, 138
-g8f6, 138
-h7h6, 138
-d8d5, 135
-d5h1, 30
+f7f5, 139

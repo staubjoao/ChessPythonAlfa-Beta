@@ -28,24 +28,24 @@ class ChessIA:
             -50, -20, -10, -10, -10, -10, -20, -50]
 
         self.bispoTabuleiro = [
-            -20, -10, -10, -10, -10, -10, -10, -20,
-            -10, 5, 0, 0, 0, 0, 5, -10,
-            -10, 10, 10, 10, 10, 10, 10, -10,
-            -10, 0, 10, 10, 10, 10, 0, -10,
-            -10, 5, 5, 10, 10, 5, 5, -10,
-            -10, 0, 5, 10, 10, 5, 0, -10,
-            -10, 0, 0, 0, 0, 0, 0, -10,
-            -20, -10, -10, -10, -10, -10, -10, -20]
+            -40, -20, -15, -15, -15, -15, -20, -40,
+            0, 5, 5, 5, 5, 5, 5, 0,
+            0, 10, 10, 18, 18, 10, 10, 0,
+            0, 10, 10, 18, 18, 10, 10, 0,
+            0, 5, 10, 18, 18, 10, 5, 0,
+            0, 0, 5, 5, 5, 5, 0, 0,
+            0, 5, 0, 0, 0, 0, 5, 0,
+            -50, -20, -10, -20, -20, -10, -20, -50]
 
         self.torreTabuleiro = [
-            0, 0, 0, 5, 5, 0, 0, 0,
-            -5, 0, 0, 0, 0, 0, 0, -5,
-            -5, 0, 0, 0, 0, 0, 0, -5,
-            -5, 0, 0, 0, 0, 0, 0, -5,
-            -5, 0, 0, 0, 0, 0, 0, -5,
-            -5, 0, 0, 0, 0, 0, 0, -5,
-            5, 10, 10, 10, 10, 10, 10, 5,
-            0, 0, 0, 0, 0, 0, 0, 0]
+            10, 10, 10, 10, 10, 10, 10, 10,
+            5, 5, 5, 10, 10, 5, 5, 5,
+            0, 0, 5, 10, 10, 5, 0, 0,
+            0, 0, 5, 10, 10, 5, 0, 0,
+            0, 0, 5, 10, 10, 5, 0, 0,
+            0, 0, 5, 10, 10, 5, 0, 0,
+            0, 0, 5, 10, 10, 5, 0, 0,
+            0, 0, 5, 10, 10, 5, 0, 0,]
 
         self.rainhaTabuleiro = [
             -20, -10, -10, -5, -5, -10, -10, -20,
@@ -129,9 +129,9 @@ class ChessIA:
 
     def quiesce(self, alpha, beta, tabuleiro):
         aux = self.avaliarTabuleiro(tabuleiro)
-        if (aux >= beta):
+        if aux >= beta:
             return beta
-        if (aux > alpha):
+        if aux > alpha:
             alpha = aux
 
         chave_posicao = self.getMovimentoTabuleiro(tabuleiro)
@@ -142,7 +142,7 @@ class ChessIA:
                 tabuleiro.push(movimento)
                 avalicao = -self.quiesce(-beta, -alpha, tabuleiro)
                 tabuleiro.pop()
-                if (avalicao >= beta):
+                if avalicao >= beta:
                     return beta
                 alpha = max(avalicao, alpha)
         self.tabela_transposicao[chave_posicao] = alpha
@@ -158,9 +158,11 @@ class ChessIA:
             avalicao = -self.alphabeta(-beta, -alpha,
                                        profundidade - 1, tabuleiro)
             tabuleiro.pop()
-            if (avalicao >= beta):
+            if avalicao >= beta:
                 return avalicao
-            if (avalicao > alpha):
+            if avalicao > melhor_avaliacao:
+                melhor_avaliacao = avalicao
+            if avalicao > alpha:
                 alpha = avalicao
             alpha = max(avalicao, alpha)
         return melhor_avaliacao
@@ -175,6 +177,7 @@ class ChessIA:
             tabuleiro.push(movimento)
             avaliacao = -self.alphabeta(-beta, -
                                         alpha, profundidade-1, tabuleiro)
+            print(avaliacao)
 
             if avaliacao > melhorAvaliacao:
                 melhorAvaliacao = avaliacao
