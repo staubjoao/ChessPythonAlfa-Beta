@@ -18,14 +18,14 @@ class ChessIA:
             0, 0, 0, 0, 0, 0, 0, 0]
 
         self.cavaloTabuleiro = [
-            -50, -40, -30, -30, -30, -30, -40, -50,
-            -40, -20, 0, 5, 5, 0, -20, -40,
-            -30, 5, 10, 15, 15, 10, 5, -30,
-            -30, 0, 15, 20, 20, 15, 0, -30,
-            -30, 5, 15, 20, 20, 15, 5, -30,
-            -30, 0, 10, 15, 15, 10, 0, -30,
-            -40, -20, 0, 0, 0, 0, -20, -40,
-            -50, -40, -30, -30, -30, -30, -40, -50]
+            -40, -10, - 5, - 5, - 5, - 5, -10, -40,
+            - 5, 5, 5, 5, 5, 5, 5, - 5,
+            - 5, 5, 10, 15, 15, 10, 5, - 5,
+            - 5, 5, 10, 15, 15, 10, 5, - 5,
+            - 5, 5, 10, 15, 15, 10, 5, - 5,
+            - 5, 5, 8, 8, 8, 8, 5, - 5,
+            - 5, 0, 5, 5, 5, 5, 0, - 5,
+            -50, -20, -10, -10, -10, -10, -20, -50]
 
         self.bispoTabuleiro = [
             -20, -10, -10, -10, -10, -10, -10, -20,
@@ -68,10 +68,6 @@ class ChessIA:
             -30, -40, -40, -50, -50, -40, -40, -30]
 
     def getMovimentos(self, tabuleiro):
-        # movimentos = []
-        # for movimento in tabuleiro.legal_moves:
-        #     if tabuleiro.piece_at(movimento.from_square).color == cor:
-        #         movimentos.append(movimento)
         return tabuleiro.legal_moves
 
     def avaliarTabuleiro(self, tabuleiro):
@@ -152,20 +148,20 @@ class ChessIA:
         self.tabela_transposicao[chave_posicao] = alpha
         return alpha
 
-    def alphabeta(self, alpha, beta, profundidadeleft, tabuleiro):
-        if profundidadeleft == 0:
+    def alphabeta(self, alpha, beta, profundidade, tabuleiro):
+        if profundidade == 0:
             return self.quiesce(alpha, beta, tabuleiro)
 
         melhor_avaliacao = float('-inf')
         for movimento in self.getMovimentos(tabuleiro):
             tabuleiro.push(movimento)
             avalicao = -self.alphabeta(-beta, -alpha,
-                                       profundidadeleft - 1, tabuleiro)
+                                       profundidade - 1, tabuleiro)
             tabuleiro.pop()
             if (avalicao >= beta):
                 return avalicao
-            if (avalicao > melhor_avaliacao):
-                melhor_avaliacao = avalicao
+            if (avalicao > alpha):
+                alpha = avalicao
             alpha = max(avalicao, alpha)
         return melhor_avaliacao
 
