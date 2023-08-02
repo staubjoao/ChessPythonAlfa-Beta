@@ -1,6 +1,7 @@
 import pygame
 import chess
 from chessIA import ChessIA
+from stockfish import Stockfish
 
 LIGHT_COLOR = (107, 142, 35)
 DARK_COLOR = (85, 107, 47)
@@ -9,7 +10,7 @@ VALID_MOVE_COLOR = (100, 100, 100)
 
 
 class ChessGame:
-    def __init__(self, largura, altura, linhas, colunas, cor_jogador, nome_jogador):
+    def __init__(self, largura, altura, linhas, colunas, cor_jogador, nome_jogador, vs_stockfish):
         self.largura = largura
         self.altura = altura
         self.linhas = linhas
@@ -17,6 +18,7 @@ class ChessGame:
         self.tamanho_quadrado = largura // colunas
         self.cor_jogador = cor_jogador
         self.nome_jogador = nome_jogador
+        self.vs_stockfish = vs_stockfish
         self.button_clicked = False
         self.rodando = True
         self.tabuleiro = chess.Board()
@@ -256,11 +258,25 @@ class ChessGame:
 
     def loopGame(self):
         ia = ChessIA()
+        stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=5, parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 1024})
         while self.rodando:
             if self.cor_jogador == self.jogador_atual:
-                self.getJogadaHumano()
+                # verifica se o oponente é o stockfish ou um humano
+                if self.vs_stockfish == 1:
+                    stockfish.set_fen_position(self.tabuleiro.fen()) # passa o tabuleiro para o stockfish
+                    best_move = stockfish.get_best_move()   # pega o melhor movimento do stockfish
+                    self.tabuleiro.push_san(best_move)      # faz o melhor movimento
+                    self.setJogada(self.cor_jogador, best_move) # atualiza a jogada
+                    if self.checarEstadoJogo():
+                        self.rodando = False
+                    else:
+                        self.jogador_atual = not self.jogador_atual
+                else:
+                    self.getJogadaHumano()
             else:
                 best_move = ia.fazerMovimento(3, self.tabuleiro)
+                stockfish.set_fen_position(self.tabuleiro.fen()) # passa o tabuleiro para o stockfish
+                top_moves_sf = stockfish.get_top_moves()
                 if best_move != None:
                     self.tabuleiro.push(best_move)
                     self.quadrado_selecionado = None
