@@ -1,0 +1,332 @@
+O jogador jogou até o fim!
+A inteligencia estava jogando com as brancas
+O ganhador foram as empate
+Jogadas brancas:
+g1f3, 139
+d2d3, 139
+c1e3, 139
+d1d2, 139
+b1d2, 130
+d2b3, 130
+d3d4, 130
+b3d2, 130
+e3f4, 130
+f4e3, 130
+e1d1, 130
+a2a3, 130
+g2g4, 130
+f1h3, 130
+g4h5, 129
+h5h6, 129
+h6g7, 128
+g7f8q, 125
+e3f4, 125
+d2f1, 125
+f1e3, 125
+f4c7, 125
+e3f5, 122
+c7a5, 122
+a5c7, 122
+c7a5, 122
+a5b4, 122
+b4c5, 122
+c5b6, 122
+b2c3, 121
+b6a5, 120
+a5b4, 120
+f3e1, 120
+e1d3, 120
+d3f4, 120
+f4g2, 120
+b4c5, 120
+g2f4, 120
+c5b4, 120
+h2h3, 120
+e2e3, 120
+b4c5, 120
+d1e2, 120
+c5b4, 120
+f4d5, 119
+d5c7, 119
+c7d5, 119
+e2d2, 119
+h1h2, 119
+d5f4, 119
+f4d5, 119
+d2e1, 119
+d5c7, 119
+e1f1, 119
+c7a6, 119
+b4c5, 119
+a6b4, 119
+d4d5, 119
+h2h1, 119
+h1h2, 119
+c5d4, 119
+d4f6, 118
+f1e1, 118
+e1d2, 115
+f6d4, 115
+d4g7, 115
+g7d4, 115
+d4g7, 115
+g7d4, 115
+d4g7, 115
+g7d4, 115
+a1g1, 115
+g1g8, 115
+g8f8, 110
+d4c5, 110
+c5d4, 110
+d2e1, 110
+e1d2, 110
+d2e1, 110
+e1d2, 110
+d2e1, 110
+d4e5, 110
+b4c6, 110
+c6d4, 110
+d4f3, 107
+f3d4, 107
+d4c6, 107
+h2h1, 107
+e5d4, 107
+c6e5, 107
+e5d7, 107
+d7f6, 107
+d5d6, 107
+f6h7, 107
+h7g5, 102
+g5e4, 101
+e1e2, 101
+d6d7, 101
+d7d8q, 101
+d8h8, 101
+h8e5, 101
+e5b5, 100
+b5e8, 100
+e8h8, 100
+h8e8, 100
+e8h8, 100
+h8g8, 100
+g8b3, 100
+e4c5, 100
+Jogadas pretas:
+d7d5, 139
+c7c5, 139
+d8a5, 139
+a5d2, 130
+e7e6, 130
+b8a6, 130
+c5c4, 130
+b7b5, 130
+g8e7, 130
+a6b4, 130
+f7f6, 130
+b4a6, 130
+h7h5, 130
+a6c7, 130
+c8d7, 130
+e8f7, 130
+h8h3, 127
+f7f8, 126
+c7e8, 126
+f8f7, 126
+e8g7, 126
+g7f5, 126
+e7f5, 123
+d7c6, 123
+a8c8, 123
+f5d6, 123
+d6f5, 123
+a7a5, 123
+c4c3, 123
+f5d6, 123
+d6c4, 123
+c8a8, 123
+e6e5, 123
+e5e4, 123
+h3h4, 123
+h4h8, 123
+a8g8, 123
+h8h7, 123
+g8h8, 123
+h7h4, 123
+h4h6, 123
+c4b2, 123
+b2a4, 123
+c6d7, 123
+f7e6, 123
+e6f7, 123
+d7g4, 123
+g4f3, 123
+a4b2, 123
+f7e8, 123
+b2c4, 123
+h8g8, 123
+e8d7, 123
+g8g5, 123
+d7c8, 123
+h6h8, 123
+h8h7, 123
+h7g7, 123
+g5h5, 123
+g7g5, 123
+h5h8, 123
+c4d2, 123
+g5g8, 123
+h8h5, 123
+g8f8, 123
+f8g8, 123
+g8f8, 123
+f8g8, 123
+g8f8, 123
+f8f7, 123
+c8d7, 123
+d7e8, 123
+f7f8, 123
+e8f8, 118
+f8f7, 118
+f7g6, 118
+g6h6, 118
+h6g6, 118
+g6h7, 118
+h5g5, 118
+g5g6, 118
+g6g5, 118
+g5g6, 118
+h7g8, 118
+g8f7, 118
+g6g5, 118
+g5g6, 118
+g6g8, 118
+g8g5, 118
+f7f8, 118
+f8e8, 118
+e8e7, 118
+e7f8, 118
+f8e8, 118
+e8d7, 118
+d7c6, 118
+c6d5, 118
+d5c6, 118
+c6b7, 126
+b7c6, 126
+c6b7, 126
+b7c7, 126
+c7b7, 126
+b7c7, 126
+c7b7, 126
+b7c6, 126
+c6b5, 126
+b5a5, 126
+Melhores jogadas:
+[{'Move': 'e2e4', 'Centipawn': 31, 'Mate': None}, {'Move': 'g1f3', 'Centipawn': 31, 'Mate': None}, {'Move': 'd2d4', 'Centipawn': 30, 'Mate': None}]
+[{'Move': 'd2d4', 'Centipawn': 33, 'Mate': None}, {'Move': 'g2g3', 'Centipawn': 24, 'Mate': None}, {'Move': 'e2e3', 'Centipawn': 17, 'Mate': None}]
+[{'Move': 'e2e4', 'Centipawn': 18, 'Mate': None}, {'Move': 'g2g3', 'Centipawn': -16, 'Mate': None}, {'Move': 'c2c4', 'Centipawn': -19, 'Mate': None}]
+[{'Move': 'e3d2', 'Centipawn': 3, 'Mate': None}, {'Move': 'c2c3', 'Centipawn': -19, 'Mate': None}, {'Move': 'd1d2', 'Centipawn': -35, 'Mate': None}]
+[{'Move': 'e3d2', 'Centipawn': 9, 'Mate': None}, {'Move': 'b1d2', 'Centipawn': -25, 'Mate': None}, {'Move': 'f3d2', 'Centipawn': -50, 'Mate': None}]
+[{'Move': 'c2c3', 'Centipawn': -19, 'Mate': None}, {'Move': 'c2c4', 'Centipawn': -21, 'Mate': None}, {'Move': 'g2g3', 'Centipawn': -25, 'Mate': None}]
+[{'Move': 'g2g3', 'Centipawn': -24, 'Mate': None}, {'Move': 'c2c3', 'Centipawn': -27, 'Mate': None}, {'Move': 'a2a3', 'Centipawn': -28, 'Mate': None}]
+[{'Move': 'b3d2', 'Centipawn': -33, 'Mate': None}, {'Move': 'b3c1', 'Centipawn': -78, 'Mate': None}, {'Move': 'b3c5', 'Centipawn': -121, 'Mate': None}]
+[{'Move': 'e3f4', 'Centipawn': -37, 'Mate': None}, {'Move': 'a2a4', 'Centipawn': -37, 'Mate': None}, {'Move': 'h2h4', 'Centipawn': -46, 'Mate': None}]
+[{'Move': 'h2h4', 'Centipawn': 5, 'Mate': None}, {'Move': 'c2c3', 'Centipawn': 4, 'Mate': None}, {'Move': 'a2a3', 'Centipawn': -17, 'Mate': None}]
+[{'Move': 'e1d1', 'Centipawn': -69, 'Mate': None}, {'Move': 'e1c1', 'Centipawn': -208, 'Mate': None}, {'Move': 'a1c1', 'Centipawn': -216, 'Mate': None}]
+[{'Move': 'a2a4', 'Centipawn': -54, 'Mate': None}, {'Move': 'e3f4', 'Centipawn': -64, 'Mate': None}, {'Move': 'h2h4', 'Centipawn': -66, 'Mate': None}]
+[{'Move': 'h2h4', 'Centipawn': -63, 'Mate': None}, {'Move': 'd2b1', 'Centipawn': -92, 'Mate': None}, {'Move': 'e3f4', 'Centipawn': -96, 'Mate': None}]
+[{'Move': 'g4h5', 'Centipawn': -107, 'Mate': None}, {'Move': 'g4g5', 'Centipawn': -113, 'Mate': None}, {'Move': 'a3a4', 'Centipawn': -226, 'Mate': None}]
+[{'Move': 'g4g5', 'Centipawn': -134, 'Mate': None}, {'Move': 'g4h5', 'Centipawn': -138, 'Mate': None}, {'Move': 'f3e1', 'Centipawn': -159, 'Mate': None}]
+[{'Move': 'h3g4', 'Centipawn': -32, 'Mate': None}, {'Move': 'e3f4', 'Centipawn': -69, 'Mate': None}, {'Move': 'd2f1', 'Centipawn': -84, 'Mate': None}]
+[{'Move': 'h6g7', 'Centipawn': -22, 'Mate': None}, {'Move': 'e3f4', 'Centipawn': -23, 'Mate': None}, {'Move': 'h3g4', 'Centipawn': -68, 'Mate': None}]
+[{'Move': 'g7f8r', 'Centipawn': 50, 'Mate': None}, {'Move': 'g7f8q', 'Centipawn': 49, 'Mate': None}, {'Move': 'g7f8b', 'Centipawn': 43, 'Mate': None}]
+[{'Move': 'e3f4', 'Centipawn': 50, 'Mate': None}, {'Move': 'h1g1', 'Centipawn': 45, 'Mate': None}, {'Move': 'f3g1', 'Centipawn': 36, 'Mate': None}]
+[{'Move': 'h1g1', 'Centipawn': 60, 'Mate': None}, {'Move': 'c2c3', 'Centipawn': 55, 'Mate': None}, {'Move': 'd2f1', 'Centipawn': 55, 'Mate': None}]
+[{'Move': 'f1e3', 'Centipawn': 65, 'Mate': None}, {'Move': 'd1e1', 'Centipawn': 63, 'Mate': None}, {'Move': 'c2c3', 'Centipawn': 60, 'Mate': None}]
+[{'Move': 'd1d2', 'Centipawn': 63, 'Mate': None}, {'Move': 'e3g4', 'Centipawn': 58, 'Mate': None}, {'Move': 'f4g3', 'Centipawn': 56, 'Mate': None}]
+[{'Move': 'e3f5', 'Centipawn': 54, 'Mate': None}, {'Move': 'd1d2', 'Centipawn': 0, 'Mate': None}, {'Move': 'c7g3', 'Centipawn': 0, 'Mate': None}]
+[{'Move': 'c2c3', 'Centipawn': 66, 'Mate': None}, {'Move': 'c7g3', 'Centipawn': 61, 'Mate': None}, {'Move': 'f3g1', 'Centipawn': 30, 'Mate': None}]
+[{'Move': 'c2c3', 'Centipawn': -5, 'Mate': None}, {'Move': 'h1g1', 'Centipawn': -12, 'Mate': None}, {'Move': 'a5b4', 'Centipawn': -25, 'Mate': None}]
+[{'Move': 'c7g3', 'Centipawn': 28, 'Mate': None}, {'Move': 'c7a5', 'Centipawn': -45, 'Mate': None}, {'Move': 'c7f4', 'Centipawn': -77, 'Mate': None}]
+[{'Move': 'h1g1', 'Centipawn': 43, 'Mate': None}, {'Move': 'd1d2', 'Centipawn': 22, 'Mate': None}, {'Move': 'a5b4', 'Centipawn': 21, 'Mate': None}]
+[{'Move': 'c2c3', 'Centipawn': 20, 'Mate': None}, {'Move': 'b4c5', 'Centipawn': 16, 'Mate': None}, {'Move': 'f3g1', 'Centipawn': 1, 'Mate': None}]
+[{'Move': 'h1g1', 'Centipawn': 6, 'Mate': None}, {'Move': 'd1d2', 'Centipawn': 1, 'Mate': None}, {'Move': 'h1e1', 'Centipawn': -3, 'Mate': None}]
+[{'Move': 'b2c3', 'Centipawn': 50, 'Mate': None}, {'Move': 'b6a5', 'Centipawn': 12, 'Mate': None}, {'Move': 'a1b1', 'Centipawn': 1, 'Mate': None}]
+[{'Move': 'b6a5', 'Centipawn': 140, 'Mate': None}, {'Move': 'h1g1', 'Centipawn': 42, 'Mate': None}, {'Move': 'f3d2', 'Centipawn': 26, 'Mate': None}]
+[{'Move': 'a5b4', 'Centipawn': 143, 'Mate': None}, {'Move': 'f3g1', 'Centipawn': 107, 'Mate': None}, {'Move': 'a3a4', 'Centipawn': 28, 'Mate': None}]
+[{'Move': 'h1g1', 'Centipawn': 172, 'Mate': None}, {'Move': 'f3d2', 'Centipawn': 158, 'Mate': None}, {'Move': 'f3g1', 'Centipawn': 154, 'Mate': None}]
+[{'Move': 'd4e5', 'Centipawn': 85, 'Mate': None}, {'Move': 'e1f3', 'Centipawn': 53, 'Mate': None}, {'Move': 'd1c1', 'Centipawn': 51, 'Mate': None}]
+[{'Move': 'd3f4', 'Centipawn': 88, 'Mate': None}, {'Move': 'a1b1', 'Centipawn': -50, 'Mate': None}, {'Move': 'a1a2', 'Centipawn': -57, 'Mate': None}]
+[{'Move': 'f4g2', 'Centipawn': 63, 'Mate': None}, {'Move': 'e2e3', 'Centipawn': 22, 'Mate': None}, {'Move': 'f4d3', 'Centipawn': -143, 'Mate': None}]
+[{'Move': 'g2e3', 'Centipawn': 153, 'Mate': None}, {'Move': 'd1e1', 'Centipawn': 115, 'Mate': None}, {'Move': 'd1c1', 'Centipawn': 114, 'Mate': None}]
+[{'Move': 'g2e3', 'Centipawn': 64, 'Mate': None}, {'Move': 'g2e1', 'Centipawn': -50, 'Mate': None}, {'Move': 'g2f4', 'Centipawn': -271, 'Mate': None}]
+[{'Move': 'e2e3', 'Centipawn': 103, 'Mate': None}, {'Move': 'h2h3', 'Centipawn': 68, 'Mate': None}, {'Move': 'h1f1', 'Centipawn': -100, 'Mate': None}]
+[{'Move': 'h2h3', 'Centipawn': 13, 'Mate': None}, {'Move': 'e2e3', 'Centipawn': -6, 'Mate': None}, {'Move': 'd1e1', 'Centipawn': -151, 'Mate': None}]
+[{'Move': 'e2e3', 'Centipawn': 12, 'Mate': None}, {'Move': 'f4g2', 'Centipawn': -155, 'Mate': None}, {'Move': 'f4d3', 'Centipawn': -208, 'Mate': None}]
+[{'Move': 'h1g1', 'Centipawn': 242, 'Mate': None}, {'Move': 'd1e2', 'Centipawn': 242, 'Mate': None}, {'Move': 'd1c1', 'Centipawn': 182, 'Mate': None}]
+[{'Move': 'd1c1', 'Centipawn': 231, 'Mate': None}, {'Move': 'd1e2', 'Centipawn': 209, 'Mate': None}, {'Move': 'd1d2', 'Centipawn': 203, 'Mate': None}]
+[{'Move': 'e2d2', 'Centipawn': 280, 'Mate': None}, {'Move': 'a1g1', 'Centipawn': 271, 'Mate': None}, {'Move': 'h1g1', 'Centipawn': 253, 'Mate': None}]
+[{'Move': 'f4d5', 'Centipawn': 220, 'Mate': None}, {'Move': 'e2d2', 'Centipawn': 220, 'Mate': None}, {'Move': 'a1b1', 'Centipawn': 207, 'Mate': None}]
+[{'Move': 'd5f4', 'Centipawn': 359, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 354, 'Mate': None}, {'Move': 'd5c7', 'Centipawn': 217, 'Mate': None}]
+[{'Move': 'a1g1', 'Centipawn': 227, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 223, 'Mate': None}, {'Move': 'c7d5', 'Centipawn': 223, 'Mate': None}]
+[{'Move': 'e2d2', 'Centipawn': 247, 'Mate': None}, {'Move': 'e2e1', 'Centipawn': 192, 'Mate': None}, {'Move': 'h3g4', 'Centipawn': 168, 'Mate': None}]
+[{'Move': 'h1g1', 'Centipawn': 336, 'Mate': None}, {'Move': 'h1b1', 'Centipawn': 334, 'Mate': None}, {'Move': 'h1h2', 'Centipawn': 320, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': 335, 'Mate': None}, {'Move': 'd5b6', 'Centipawn': 330, 'Mate': None}, {'Move': 'd2c1', 'Centipawn': 267, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': 340, 'Mate': None}, {'Move': 'a1g1', 'Centipawn': 284, 'Mate': None}, {'Move': 'd2c1', 'Centipawn': 278, 'Mate': None}]
+[{'Move': 'd2c1', 'Centipawn': 125, 'Mate': None}, {'Move': 'd2e1', 'Centipawn': -888, 'Mate': None}]
+[{'Move': 'h2h1', 'Centipawn': -919, 'Mate': None}, {'Move': 'e1f1', 'Centipawn': None, 'Mate': -11}, {'Move': 'd5f6', 'Centipawn': None, 'Mate': -9}]
+[{'Move': 'h2h1', 'Centipawn': None, 'Mate': -6}, {'Move': 'e1f1', 'Centipawn': None, 'Mate': -4}, {'Move': 'h2g2', 'Centipawn': None, 'Mate': -3}]
+[{'Move': 'h3h4', 'Centipawn': -474, 'Mate': None}, {'Move': 'c7d5', 'Centipawn': -537, 'Mate': None}, {'Move': 'b4d6', 'Centipawn': -550, 'Mate': None}]
+[{'Move': 'h3h4', 'Centipawn': -439, 'Mate': None}, {'Move': 'b4d6', 'Centipawn': -569, 'Mate': None}, {'Move': 'a6c5', 'Centipawn': -615, 'Mate': None}]
+[{'Move': 'h3h4', 'Centipawn': -652, 'Mate': None}, {'Move': 'c5d6', 'Centipawn': -663, 'Mate': None}, {'Move': 'h2h1', 'Centipawn': -989, 'Mate': None}]
+[{'Move': 'c5f8', 'Centipawn': -432, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': -486, 'Mate': None}, {'Move': 'b4d5', 'Centipawn': -613, 'Mate': None}]
+[{'Move': 'h2h1', 'Centipawn': None, 'Mate': -3}, {'Move': 'h2g2', 'Centipawn': None, 'Mate': -2}, {'Move': 'f1e1', 'Centipawn': None, 'Mate': -1}]
+[{'Move': 'a3a4', 'Centipawn': -233, 'Mate': None}, {'Move': 'c5f8', 'Centipawn': -457, 'Mate': None}, {'Move': 'b4c6', 'Centipawn': -562, 'Mate': None}]
+[{'Move': 'b4c6', 'Centipawn': 0, 'Mate': None}, {'Move': 'a3a4', 'Centipawn': -87, 'Mate': None}, {'Move': 'c5d4', 'Centipawn': -249, 'Mate': None}]
+[{'Move': 'd4f6', 'Centipawn': 0, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': -42, 'Mate': None}, {'Move': 'b4c6', 'Centipawn': -431, 'Mate': None}]
+[{'Move': 'f1e1', 'Centipawn': 272, 'Mate': None}]
+[{'Move': 'e1d2', 'Centipawn': 615, 'Mate': None}, {'Move': 'f6e5', 'Centipawn': 238, 'Mate': None}, {'Move': 'h2h1', 'Centipawn': 53, 'Mate': None}]
+[{'Move': 'a3a4', 'Centipawn': 689, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 684, 'Mate': None}, {'Move': 'f6d4', 'Centipawn': 675, 'Mate': None}]
+[{'Move': 'a3a4', 'Centipawn': 725, 'Mate': None}, {'Move': 'a1g1', 'Centipawn': 706, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 683, 'Mate': None}]
+[{'Move': 'g7d4', 'Centipawn': 662, 'Mate': None}, {'Move': 'g7f6', 'Centipawn': 646, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 593, 'Mate': None}]
+[{'Move': 'a3a4', 'Centipawn': 716, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 685, 'Mate': None}, {'Move': 'a1g1', 'Centipawn': 677, 'Mate': None}]
+[{'Move': 'g7d4', 'Centipawn': 680, 'Mate': None}, {'Move': 'g7f6', 'Centipawn': 633, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 578, 'Mate': None}]
+[{'Move': 'a3a4', 'Centipawn': 737, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 693, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 683, 'Mate': None}]
+[{'Move': 'g7d4', 'Centipawn': 679, 'Mate': None}, {'Move': 'a1g1', 'Centipawn': 646, 'Mate': None}, {'Move': 'a3a4', 'Centipawn': 578, 'Mate': None}]
+[{'Move': 'a3a4', 'Centipawn': 730, 'Mate': None}, {'Move': 'a1g1', 'Centipawn': 695, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 695, 'Mate': None}]
+[{'Move': 'h3h4', 'Centipawn': 710, 'Mate': None}, {'Move': 'g1g8', 'Centipawn': 706, 'Mate': None}, {'Move': 'a3a4', 'Centipawn': 706, 'Mate': None}]
+[{'Move': 'g8g6', 'Centipawn': 683, 'Mate': None}, {'Move': 'g8g3', 'Centipawn': 683, 'Mate': None}, {'Move': 'g8g1', 'Centipawn': 682, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': 683, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 678, 'Mate': None}, {'Move': 'd4c5', 'Centipawn': 673, 'Mate': None}]
+[{'Move': 'c5d4', 'Centipawn': 679, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 671, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 670, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': 720, 'Mate': None}, {'Move': 'b4c6', 'Centipawn': 693, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 667, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': 701, 'Mate': None}, {'Move': 'e1d2', 'Centipawn': 687, 'Mate': None}, {'Move': 'd5d6', 'Centipawn': 676, 'Mate': None}]
+[{'Move': 'b4c6', 'Centipawn': 691, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 691, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 673, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': 694, 'Mate': None}, {'Move': 'e1d2', 'Centipawn': 691, 'Mate': None}, {'Move': 'd5d6', 'Centipawn': 682, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': 703, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 687, 'Mate': None}, {'Move': 'd5d6', 'Centipawn': 685, 'Mate': None}]
+[{'Move': 'e1d2', 'Centipawn': 653, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 653, 'Mate': None}, {'Move': 'e1f1', 'Centipawn': 547, 'Mate': None}]
+[{'Move': 'e5g3', 'Centipawn': 634, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 588, 'Mate': None}, {'Move': 'e1d2', 'Centipawn': 568, 'Mate': None}]
+[{'Move': 'e1f1', 'Centipawn': 698, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 683, 'Mate': None}, {'Move': 'e1d2', 'Centipawn': 678, 'Mate': None}]
+[{'Move': 'd4f3', 'Centipawn': 697, 'Mate': None}, {'Move': 'e5g3', 'Centipawn': 668, 'Mate': None}, {'Move': 'e1d2', 'Centipawn': 640, 'Mate': None}]
+[{'Move': 'f3d4', 'Centipawn': 1074, 'Mate': None}, {'Move': 'f3d2', 'Centipawn': 1052, 'Mate': None}, {'Move': 'f3h4', 'Centipawn': 861, 'Mate': None}]
+[{'Move': 'f2f4', 'Centipawn': 1132, 'Mate': None}, {'Move': 'd4c6', 'Centipawn': 1107, 'Mate': None}, {'Move': 'e5f4', 'Centipawn': 949, 'Mate': None}]
+[{'Move': 'e1d2', 'Centipawn': 1340, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 1269, 'Mate': None}, {'Move': 'e1e2', 'Centipawn': 1220, 'Mate': None}]
+[{'Move': 'h3h4', 'Centipawn': 1248, 'Mate': None}, {'Move': 'e1e2', 'Centipawn': 1247, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 1201, 'Mate': None}]
+[{'Move': 'c6e5', 'Centipawn': 1203, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 1112, 'Mate': None}, {'Move': 'd4e5', 'Centipawn': 1112, 'Mate': None}]
+[{'Move': 'e1e2', 'Centipawn': 1403, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 1393, 'Mate': None}, {'Move': 'd5d6', 'Centipawn': 1381, 'Mate': None}]
+[{'Move': 'd7f6', 'Centipawn': 1274, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 1229, 'Mate': None}, {'Move': 'd7e5', 'Centipawn': 1207, 'Mate': None}]
+[{'Move': 'd5d6', 'Centipawn': 1353, 'Mate': None}, {'Move': 'e1e2', 'Centipawn': 1331, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 1284, 'Mate': None}]
+[{'Move': 'f6h7', 'Centipawn': 3836, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 1374, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 1271, 'Mate': None}]
+[{'Move': 'h7g5', 'Centipawn': 4044, 'Mate': None}, {'Move': 'd6d7', 'Centipawn': 3839, 'Mate': None}, {'Move': 'h3h4', 'Centipawn': 1342, 'Mate': None}]
+[{'Move': 'h3h4', 'Centipawn': 4005, 'Mate': None}, {'Move': 'c3c4', 'Centipawn': 3998, 'Mate': None}, {'Move': 'e1d2', 'Centipawn': 3995, 'Mate': None}]
+[{'Move': 'h1g1', 'Centipawn': 4520, 'Mate': None}, {'Move': 'e1e2', 'Centipawn': 4446, 'Mate': None}, {'Move': 'e1d2', 'Centipawn': 4429, 'Mate': None}]
+[{'Move': 'd6d7', 'Centipawn': None, 'Mate': 6}, {'Move': 'e2f3', 'Centipawn': 5082, 'Mate': None}, {'Move': 'e2d3', 'Centipawn': 4782, 'Mate': None}]
+[{'Move': 'd7d8q', 'Centipawn': None, 'Mate': 4}, {'Move': 'd7d8n', 'Centipawn': 4693, 'Mate': None}, {'Move': 'h1b1', 'Centipawn': 4693, 'Mate': None}]
+[{'Move': 'c3c4', 'Centipawn': None, 'Mate': 3}, {'Move': 'e4c5', 'Centipawn': None, 'Mate': 3}, {'Move': 'h1b1', 'Centipawn': None, 'Mate': 4}]
+[{'Move': 'h8c8', 'Centipawn': None, 'Mate': 3}, {'Move': 'h8e8', 'Centipawn': None, 'Mate': 5}, {'Move': 'h8e5', 'Centipawn': None, 'Mate': 5}]
+[{'Move': 'e5b5', 'Centipawn': None, 'Mate': 4}, {'Move': 'h1b1', 'Centipawn': None, 'Mate': 4}, {'Move': 'e5d5', 'Centipawn': None, 'Mate': 5}]
+[{'Move': 'd4b6', 'Centipawn': None, 'Mate': 3}, {'Move': 'e4c5', 'Centipawn': None, 'Mate': 3}, {'Move': 'e4f6', 'Centipawn': None, 'Mate': 3}]
+[{'Move': 'h1b1', 'Centipawn': None, 'Mate': 2}, {'Move': 'e8d7', 'Centipawn': None, 'Mate': 3}, {'Move': 'd4e5', 'Centipawn': None, 'Mate': 3}]
+[{'Move': 'e4c5', 'Centipawn': None, 'Mate': 4}, {'Move': 'h8h7', 'Centipawn': None, 'Mate': 4}, {'Move': 'h3h4', 'Centipawn': None, 'Mate': 5}]
+[{'Move': 'h1b1', 'Centipawn': None, 'Mate': 2}, {'Move': 'e8d7', 'Centipawn': None, 'Mate': 3}, {'Move': 'e4c5', 'Centipawn': None, 'Mate': 4}]
+[{'Move': 'h8c8', 'Centipawn': None, 'Mate': 3}, {'Move': 'h8e8', 'Centipawn': None, 'Mate': 5}, {'Move': 'f2f3', 'Centipawn': None, 'Mate': 6}]
+[{'Move': 'c3c4', 'Centipawn': None, 'Mate': 2}, {'Move': 'g8a8', 'Centipawn': None, 'Mate': 2}, {'Move': 'g8e8', 'Centipawn': None, 'Mate': 3}]
+[{'Move': 'c3c4', 'Centipawn': None, 'Mate': 2}, {'Move': 'h3h4', 'Centipawn': None, 'Mate': 2}, {'Move': 'f2f4', 'Centipawn': None, 'Mate': 2}]

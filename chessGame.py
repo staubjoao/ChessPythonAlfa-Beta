@@ -26,14 +26,17 @@ class ChessGame:
         self.jogador_atual = chess.WHITE
         self.desistencia = False
         self.quadrado_selecionado = None
-        self.screen = pygame.display.set_mode((largura, altura))
         self.movimentos_validos = []
         self.imagens_pecas = {}
         self.jogadas_brancas = []
         self.jogadas_pretas = []
         self.scores_brancas = []
         self.scores_pretas = []
+        self.top_moves_sf_arr = []
         self.setPecas()
+
+    def abrirTela(self):
+        self.screen = pygame.display.set_mode((self.largura, self.altura))
         pygame.init()
 
     def setPecas(self):
@@ -236,7 +239,7 @@ class ChessGame:
     def salvarArquivoLog(self):
         print(self.nome_jogador)
         try:
-            with open(f"avaliacao/{self.nome_jogador}.txt", "w") as file:
+            with open(f"teste/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -254,23 +257,32 @@ class ChessGame:
                 for i in range(len(self.jogadas_pretas)):
                     file.write(str(self.jogadas_pretas[i]))
                     file.write(f", {self.scores_brancas[i]}\n")
+                file.write("Melhores jogadas:\n")
+                for i in range(len(self.top_moves_sf_arr)):
+                    file.write(str(self.top_moves_sf_arr[i]))
+                    file.write("\n")
         except Exception as e:
             print(f"Erro ao abrir o arquivo: {e}")
 
     def loopGame(self):
         ia = ChessIA()
-        stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=15, parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
+        stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=15,
+                              parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
         stockfish.set_elo_rating(self.nivel_stockfish)
         while self.rodando:
             if self.cor_jogador == self.jogador_atual:
                 # verifica se o oponente é o stockfish ou um humano
                 if self.vs_stockfish == 1:
-                    stockfish.set_fen_position(self.tabuleiro.fen()) # passa o tabuleiro para o stockfish
-                    best_move = chess.Move.from_uci(stockfish.get_best_move())  # pega o melhor movimento do stockfish
-                    self.tabuleiro.push(best_move)      # faz o melhor movimento
+                    # passa o tabuleiro para o stockfish
+                    stockfish.set_fen_position(self.tabuleiro.fen())
+                    # pega o melhor movimento do stockfish
+                    best_move = chess.Move.from_uci(stockfish.get_best_move())
+                    # faz o melhor movimento
+                    self.tabuleiro.push(best_move)
                     self.quadrado_selecionado = None
                     self.movimentos_validos = []
-                    self.setJogada(self.cor_jogador, best_move) # atualiza a jogada
+                    # atualiza a jogada
+                    self.setJogada(self.cor_jogador, best_move)
                     if self.checarEstadoJogo():
                         self.rodando = False
                     else:
@@ -279,8 +291,9 @@ class ChessGame:
                 else:
                     self.getJogadaHumano()
             else:
-                best_move = ia.fazerMovimento(3, self.tabuleiro)
-                stockfish.set_fen_position(self.tabuleiro.fen()) # passa o tabuleiro para o stockfish
+                best_move = ia.fazerMovimento(2, self.tabuleiro)
+                # passa o tabuleiro para o stockfish
+                stockfish.set_fen_position(self.tabuleiro.fen())
                 top_moves_sf = stockfish.get_top_moves(3)
                 if best_move != None:
                     self.tabuleiro.push(best_move)
@@ -301,28 +314,41 @@ class ChessGame:
         self.salvarArquivoLog()
         self.finalizar()
 
-    # def loopGameStockFish(self):
-    #     count = 0
-    #     movehistory = []
-    #     game = chess.pgn.Game()
-    #     board = chess.Board()
-    #     engine = chess.engine.SimpleEngine.popen_uci("./stockfish/src/")
-    #     while not board.is_game_over(claim_draw=True):
-    #         if board.turn:
-    #             count += 1
-    #             print(f'\n{count}]\n')
-    #             move = engine.play(board, chess.engine.Limit(time=0.1))
-    #             movehistory.append(move.move)
-    #             board.push(move.move)
-    #             print(board)
-    #         else:
-    #             move = selectmove(3)
-    #             movehistory.append(move)
-    #             board.push(move)
-    #             print(board)
-    #     game.add_line(movehistory)
-    #     game.headers["Result"] = str(board.result(claim_draw=True))
-    #     print(game)
+    def loopGameStockFish(self):
+        ia = ChessIA()
+        stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=15,
+                              parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
+        stockfish.set_elo_rating(self.nivel_stockfish)
+        valor_aux = 0
+        while self.rodando:
+            if self.cor_jogador == self.jogador_atual:
+                stockfish.set_fen_position(self.tabuleiro.fen())
+                best_move = chess.Move.from_uci(stockfish.get_best_move())
+                self.tabuleiro.push(best_move)
+                self.setJogada(self.cor_jogador, best_move)
+                if self.checarEstadoJogo():
+                    self.rodando = False
+                else:
+                    self.jogador_atual = not self.jogador_atual
+            else:
+                best_move = ia.fazerMovimento(3, self.tabuleiro)
+                # passa o tabuleiro para o stockfish
+                stockfish.set_fen_position(self.tabuleiro.fen())
+                top_moves_sf = stockfish.get_top_moves(3)
+                self.top_moves_sf_arr.append(top_moves_sf)
+                if best_move != None:
+                    self.tabuleiro.push(best_move)
+                    self.setJogada(not self.cor_jogador, best_move)
+                if self.checarEstadoJogo():
+                    self.rodando = False
+                else:
+                    self.jogador_atual = not self.jogador_atual
+
+            print(self.tabuleiro)
+            valor_aux += 1
+            print(valor_aux)
+
+        self.salvarArquivoLog()
 
     def finalizar(self):
         # Finalizando o pygame
