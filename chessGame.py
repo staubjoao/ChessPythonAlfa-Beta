@@ -257,44 +257,17 @@ class ChessGame:
                 for i in range(len(self.jogadas_pretas)):
                     file.write(str(self.jogadas_pretas[i]))
                     file.write(f", {self.scores_brancas[i]}\n")
-                file.write("Melhores jogadas:\n")
-                for i in range(len(self.top_moves_sf_arr)):
-                    file.write(str(self.top_moves_sf_arr[i]))
-                    file.write("\n")
         except Exception as e:
             print(f"Erro ao abrir o arquivo: {e}")
 
     def loopGame(self):
         ia = ChessIA()
-        stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=15,
-                              parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
-        stockfish.set_elo_rating(self.nivel_stockfish)
         while self.rodando:
             if self.cor_jogador == self.jogador_atual:
-                # verifica se o oponente é o stockfish ou um humano
-                if self.vs_stockfish == 1:
-                    # passa o tabuleiro para o stockfish
-                    stockfish.set_fen_position(self.tabuleiro.fen())
-                    # pega o melhor movimento do stockfish
-                    best_move = chess.Move.from_uci(stockfish.get_best_move())
-                    # faz o melhor movimento
-                    self.tabuleiro.push(best_move)
-                    self.quadrado_selecionado = None
-                    self.movimentos_validos = []
-                    # atualiza a jogada
-                    self.setJogada(self.cor_jogador, best_move)
-                    if self.checarEstadoJogo():
-                        self.rodando = False
-                    else:
-                        self.jogador_atual = not self.jogador_atual
-
-                else:
-                    self.getJogadaHumano()
+                self.getJogadaHumano()
             else:
-                best_move = ia.fazerMovimento(2, self.tabuleiro)
+                best_move = ia.escolherMelhorMovimento(3, self.tabuleiro)
                 # passa o tabuleiro para o stockfish
-                stockfish.set_fen_position(self.tabuleiro.fen())
-                top_moves_sf = stockfish.get_top_moves(3)
                 if best_move != None:
                     self.tabuleiro.push(best_move)
                     self.quadrado_selecionado = None
@@ -316,11 +289,14 @@ class ChessGame:
 
     def loopGameStockFish(self):
         ia = ChessIA()
-        stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=15,
+        # stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=15,
+        #                       parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
+        stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=15,
                               parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
         stockfish.set_elo_rating(self.nivel_stockfish)
-        valor_aux = 0
+        count = 0
         while self.rodando:
+            print(count)
             if self.cor_jogador == self.jogador_atual:
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 best_move = chess.Move.from_uci(stockfish.get_best_move())
@@ -331,7 +307,7 @@ class ChessGame:
                 else:
                     self.jogador_atual = not self.jogador_atual
             else:
-                best_move = ia.fazerMovimento(3, self.tabuleiro)
+                best_move = ia.escolherMelhorMovimento(3, self.tabuleiro)
                 # passa o tabuleiro para o stockfish
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 top_moves_sf = stockfish.get_top_moves(3)
@@ -345,8 +321,7 @@ class ChessGame:
                     self.jogador_atual = not self.jogador_atual
 
             print(self.tabuleiro)
-            valor_aux += 1
-            print(valor_aux)
+            count += 1
 
         self.salvarArquivoLog()
 

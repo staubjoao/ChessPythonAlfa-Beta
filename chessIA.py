@@ -173,15 +173,14 @@ class ChessIA:
                 alpha = avalicao
         return melhor_avaliacao
 
-    def escolherMelhorMovimento(self, profundidade):
+    def escolherMelhorMovimento(self, profundidade, tabuleiro):
+        self.tabuleiro = tabuleiro
+        melhorMovimento = chess.Move.null()
         melhorAvaliacao = float('-inf')
-        melhorMovimento = None
         alpha = float('-inf')
         beta = float('inf')
 
-        movimentos = self.getMovimentos()
-
-        for movimento in movimentos:
+        for movimento in self.getMovimentos():
             self.tabuleiro.push(movimento)
             avaliacao = -self.alphabeta(-beta, -alpha, profundidade-1)
             if avaliacao > melhorAvaliacao:
@@ -191,9 +190,4 @@ class ChessIA:
             if melhorAvaliacao > alpha:
                 alpha = melhorAvaliacao
             self.tabuleiro.pop()
-
         return melhorMovimento
-
-    def fazerMovimento(self, profundidade, tabuleiro):
-        self.tabuleiro = tabuleiro
-        return self.escolherMelhorMovimento(profundidade)
