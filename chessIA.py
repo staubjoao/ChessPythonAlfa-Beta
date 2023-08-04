@@ -65,6 +65,12 @@ class ChessIA:
             24, 20, 16, 12, 12, 16, 20, 24,
             24, 24, 24, 16, 16, 6, 32, 32]
 
+        self.peao_valor = 100
+        self.cavalo_valor = 320
+        self.bispo_valor = 330
+        self.torre_valor = 500
+        self.rainha_valor = 900
+
     def avaliarTabuleiro(self):
         if self.tabuleiro.is_checkmate():
             if self.tabuleiro.turn:
@@ -74,19 +80,28 @@ class ChessIA:
         if self.tabuleiro.is_insufficient_material() or self.tabuleiro.is_stalemate():
             return 0
 
-        wp = len(self.tabuleiro.pieces(chess.PAWN, chess.WHITE))
-        bp = len(self.tabuleiro.pieces(chess.PAWN, chess.BLACK))
-        wn = len(self.tabuleiro.pieces(chess.KNIGHT, chess.WHITE))
-        bn = len(self.tabuleiro.pieces(chess.KNIGHT, chess.BLACK))
-        wb = len(self.tabuleiro.pieces(chess.BISHOP, chess.WHITE))
-        bb = len(self.tabuleiro.pieces(chess.BISHOP, chess.BLACK))
-        wr = len(self.tabuleiro.pieces(chess.ROOK, chess.WHITE))
-        br = len(self.tabuleiro.pieces(chess.ROOK, chess.BLACK))
-        wq = len(self.tabuleiro.pieces(chess.QUEEN, chess.WHITE))
-        bq = len(self.tabuleiro.pieces(chess.QUEEN, chess.BLACK))
+        qtd_peao_branco = len(self.tabuleiro.pieces(chess.PAWN, chess.WHITE))
+        qtd_cavalo_branco = len(
+            self.tabuleiro.pieces(chess.KNIGHT, chess.WHITE))
+        qtd_bispo_branco = len(
+            self.tabuleiro.pieces(chess.BISHOP, chess.WHITE))
+        qtd_torre_branco = len(self.tabuleiro.pieces(chess.ROOK, chess.WHITE))
+        qtd_rainha_branco = len(
+            self.tabuleiro.pieces(chess.QUEEN, chess.WHITE))
+        qtd_peao_preto = len(self.tabuleiro.pieces(chess.PAWN, chess.BLACK))
+        qtd_cavalo_preto = len(
+            self.tabuleiro.pieces(chess.KNIGHT, chess.BLACK))
+        qtd_bispo_preto = len(self.tabuleiro.pieces(chess.BISHOP, chess.BLACK))
+        qtd_torre_preto = len(self.tabuleiro.pieces(chess.ROOK, chess.BLACK))
+        qtd_rainha_preto = len(self.tabuleiro.pieces(chess.QUEEN, chess.BLACK))
 
-        material = 100 * (wp - bp) + 320 * (wn - bn) + 330 * \
-            (wb - bb) + 500 * (wr - br) + 900 * (wq - bq)
+        material = (
+            self.peao_valor * (qtd_peao_branco - qtd_peao_preto)
+            + self.cavalo_valor * (qtd_cavalo_branco - qtd_cavalo_preto)
+            + self.bispo_valor * (qtd_bispo_branco - qtd_bispo_preto)
+            + self.torre_valor * (qtd_torre_branco - qtd_torre_preto)
+            + self.rainha_valor * (qtd_rainha_branco - qtd_rainha_preto)
+        )
 
         peaosq = sum([self.peaoTabuleiro[i]
                      for i in self.tabuleiro.pieces(chess.PAWN, chess.WHITE)])

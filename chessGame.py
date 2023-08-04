@@ -1,7 +1,9 @@
 import pygame
 import chess
 from chessIA import ChessIA
+from chessIAteste import ChessIAteste
 from stockfish import Stockfish
+import os
 
 LIGHT_COLOR = (107, 142, 35)
 DARK_COLOR = (85, 107, 47)
@@ -32,7 +34,8 @@ class ChessGame:
         self.jogadas_pretas = []
         self.scores_brancas = []
         self.scores_pretas = []
-        self.top_moves_sf_arr = []
+        self.debug_info_nodes = []
+        self.debug_info_time = []
         self.setPecas()
 
     def abrirTela(self):
@@ -257,16 +260,26 @@ class ChessGame:
                 for i in range(len(self.jogadas_pretas)):
                     file.write(str(self.jogadas_pretas[i]))
                     file.write(f", {self.scores_brancas[i]}\n")
+                file.write("debug_info_ia:\n")
+                for i in range(len(self.debug_info_nodes)):
+                    file.write(
+                        f"nodes: {self.debug_info_nodes[i]}, time: {self.debug_info_time[i]}\n")
         except Exception as e:
             print(f"Erro ao abrir o arquivo: {e}")
 
     def loopGame(self):
-        ia = ChessIA()
+        # ia = ChessIA()
+        ia = ChessIAteste()
+
+        profundidade = 4
         while self.rodando:
             if self.cor_jogador == self.jogador_atual:
                 self.getJogadaHumano()
             else:
-                best_move = ia.escolherMelhorMovimento(3, self.tabuleiro)
+                # best_move = ia.escolherMelhorMovimento(3, self.tabuleiro)
+                best_move, debug_info = ia.selecionarMovimento(
+                    profundidade, self.tabuleiro, True)
+                self.debug_info_ia.append(debug_info)
                 # passa o tabuleiro para o stockfish
                 if best_move != None:
                     self.tabuleiro.push(best_move)
@@ -288,15 +301,19 @@ class ChessGame:
         self.finalizar()
 
     def loopGameStockFish(self):
-        ia = ChessIA()
-        # stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=15,
-        #                       parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
-        stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=15,
-                              parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
+        # ia = ChessIA()
+        ia = ChessIAteste()
+        profundidade = 3
+        if os.name == "Linux":
+            stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=profundidade,
+                                  parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
+        else:
+            stockfish = Stockfish(path='stockfish\\stockfish-windows-x86-64-avx2.exe', depth=profundidade,
+                                  parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
         stockfish.set_elo_rating(self.nivel_stockfish)
         count = 0
         while self.rodando:
-            print(count)
+            print(f'{count}, profundidade: {profundidade}')
             if self.cor_jogador == self.jogador_atual:
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 best_move = chess.Move.from_uci(stockfish.get_best_move())
@@ -307,11 +324,16 @@ class ChessGame:
                 else:
                     self.jogador_atual = not self.jogador_atual
             else:
-                best_move = ia.escolherMelhorMovimento(3, self.tabuleiro)
+                # best_move = ia.escolherMelhorMovimento(
+                #     profundidade, self.tabuleiro)
+                best_move, debug_info = ia.selecionarMovimento(
+                    profundidade, self.tabuleiro, True)
+
+                self.debug_info_nodes.append(debug_info['nodes'])
+                self.debug_info_time.append(debug_info['time'])
                 # passa o tabuleiro para o stockfish
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 top_moves_sf = stockfish.get_top_moves(3)
-                self.top_moves_sf_arr.append(top_moves_sf)
                 if best_move != None:
                     self.tabuleiro.push(best_move)
                     self.setJogada(not self.cor_jogador, best_move)
