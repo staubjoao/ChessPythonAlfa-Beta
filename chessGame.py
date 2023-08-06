@@ -1,7 +1,6 @@
 import pygame
 import chess
 from chessIA import ChessIA
-from chessIAteste import ChessIAteste
 from stockfish import Stockfish
 import os
 
@@ -263,24 +262,45 @@ class ChessGame:
                 file.write("debug_info_ia:\n")
                 for i in range(len(self.debug_info_nodes)):
                     file.write(
-                        f"nodes: {self.debug_info_nodes[i]}, time: {self.debug_info_time[i]}\n")
+                        f"nós: {self.debug_info_nodes[i]}, tempo: {self.debug_info_time[i]}\n")
         except Exception as e:
             print(f"Erro ao abrir o arquivo: {e}")
 
-    def loopGame(self):
-        # ia = ChessIA()
-        ia = ChessIAteste()
+    def imprimirTabuleiro(self):
+        tabuleiro_str = list(str(self.tabuleiro))
+        unicode_pecas = {
+            "R": "♖",
+            "N": "♘",
+            "B": "♗",
+            "Q": "♕",
+            "K": "♔",
+            "P": "♙",
+            "r": "♜",
+            "n": "♞",
+            "b": "♝",
+            "q": "♛",
+            "k": "♚",
+            "p": "♟",
+            ".": "·",
+        }
+        for i, char in enumerate(tabuleiro_str):
+            if char in unicode_pecas:
+                tabuleiro_str[i] = unicode_pecas[char]
+        for i in tabuleiro_str:
+            print(i, end="")
 
-        profundidade = 4
+    def loopGame(self):
+        ia = ChessIA()
+
+        profundidade = 3
         while self.rodando:
             if self.cor_jogador == self.jogador_atual:
                 self.getJogadaHumano()
             else:
-                # best_move = ia.escolherMelhorMovimento(3, self.tabuleiro)
                 best_move, debug_info = ia.selecionarMovimento(
                     profundidade, self.tabuleiro, True)
-                self.debug_info_ia.append(debug_info)
-                # passa o tabuleiro para o stockfish
+                self.debug_info_nodes.append(debug_info[0])
+                self.debug_info_time.append(debug_info[1])
                 if best_move != None:
                     self.tabuleiro.push(best_move)
                     self.quadrado_selecionado = None
@@ -301,10 +321,9 @@ class ChessGame:
         self.finalizar()
 
     def loopGameStockFish(self):
-        # ia = ChessIA()
-        ia = ChessIAteste()
+        ia = ChessIA()
         profundidade = 3
-        if os.name == "Linux":
+        if os.name == "posix":
             stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=profundidade,
                                   parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
         else:
@@ -313,8 +332,8 @@ class ChessGame:
         stockfish.set_elo_rating(self.nivel_stockfish)
         count = 0
         while self.rodando:
-            print(f'{count}, profundidade: {profundidade}')
             if self.cor_jogador == self.jogador_atual:
+                print("Vez do stockfish")
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 best_move = chess.Move.from_uci(stockfish.get_best_move())
                 self.tabuleiro.push(best_move)
@@ -324,13 +343,12 @@ class ChessGame:
                 else:
                     self.jogador_atual = not self.jogador_atual
             else:
-                # best_move = ia.escolherMelhorMovimento(
-                #     profundidade, self.tabuleiro)
+                print("Vez da nossa IA")
                 best_move, debug_info = ia.selecionarMovimento(
                     profundidade, self.tabuleiro, True)
 
-                self.debug_info_nodes.append(debug_info['nodes'])
-                self.debug_info_time.append(debug_info['time'])
+                self.debug_info_nodes.append(debug_info[0])
+                self.debug_info_time.append(debug_info[1])
                 # passa o tabuleiro para o stockfish
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 top_moves_sf = stockfish.get_top_moves(3)
@@ -342,7 +360,8 @@ class ChessGame:
                 else:
                     self.jogador_atual = not self.jogador_atual
 
-            print(self.tabuleiro)
+            self.imprimirTabuleiro()
+            print()
             count += 1
 
         self.salvarArquivoLog()

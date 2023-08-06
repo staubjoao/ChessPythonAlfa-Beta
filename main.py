@@ -4,7 +4,7 @@ from chessGame import ChessGame
 
 def main():
     if len(sys.argv) == 2 and str(sys.argv[1]) == "-sf":
-        niveis = [250, 500, 1000, 1250, 1500, 1750, 2000]
+        niveis = [250, 500, 1000, 1500, 2000]
         for nivel in niveis:
             for i in range(2):
                 corSelecionada = i
