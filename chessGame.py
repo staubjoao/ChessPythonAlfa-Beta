@@ -298,7 +298,7 @@ class ChessGame:
                 self.getJogadaHumano()
             else:
                 best_move, debug_info = ia.selecionarMovimento(
-                    profundidade, self.tabuleiro, True)
+                    profundidade, self.tabuleiro)
                 self.debug_info_nodes.append(debug_info[0])
                 self.debug_info_time.append(debug_info[1])
                 if best_move != None:
@@ -345,7 +345,7 @@ class ChessGame:
             else:
                 print("Vez da nossa IA")
                 best_move, debug_info = ia.selecionarMovimento(
-                    profundidade, self.tabuleiro, True)
+                    profundidade, self.tabuleiro)
 
                 self.debug_info_nodes.append(debug_info[0])
                 self.debug_info_time.append(debug_info[1])

@@ -230,7 +230,7 @@ class ChessIA:
 
         return False
 
-    def selecionarMovimento(self, profundidade, tabuleiro, debug):
+    def selecionarMovimento(self, profundidade, tabuleiro):
         self.nodes = 0
         t0 = time.time()
 
@@ -319,10 +319,10 @@ class ChessIA:
         return alpha
 
     def minimax(self, profundidade, tabuleiro, alpha, beta):
-        self.nodes += 1
         if profundidade == 0:
             return self.quiesce(tabuleiro, alpha, beta)
 
+        self.nodes += 1
         melhor_movimento = -float("inf")
         movimentos = self.ordenarMovimentos(tabuleiro)
         for movimento in movimentos:
