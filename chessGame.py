@@ -241,7 +241,7 @@ class ChessGame:
     def salvarArquivoLog(self):
         print(self.nome_jogador)
         try:
-            with open(f"teste/{self.nome_jogador}.txt", "w") as file:
+            with open(f"testes/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -320,9 +320,8 @@ class ChessGame:
         self.salvarArquivoLog()
         self.finalizar()
 
-    def loopGameStockFish(self):
+    def loopGameStockFish(self, profundidade):
         ia = ChessIA()
-        profundidade = 3
         if os.name == "posix":
             stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=profundidade,
                                   parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
@@ -359,6 +358,9 @@ class ChessGame:
                     self.rodando = False
                 else:
                     self.jogador_atual = not self.jogador_atual
+            if self.tabuleiro.can_claim_fifty_moves() or self.tabuleiro.can_claim_draw():
+                self.rodando = False
+                self.ganhador = 2
 
             self.imprimirTabuleiro()
             print()
