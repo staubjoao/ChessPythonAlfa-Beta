@@ -33,7 +33,12 @@ def main():
             chessGame = ChessGame(700, 750, 8, 8, True, nomeJogador, 1, nivel)
         elif corSelecionada == 0:
             chessGame = ChessGame(700, 750, 8, 8, False, nomeJogador, 1, nivel)
-        chessGame.loopGameStockFish(3)
+        chessGame.loopGameStockFish(4)
+    elif len(sys.argv) == 2 and str(sys.argv[1]) == "-ia":
+        for i in range(6):
+            chessGame = ChessGame(700, 750, 8, 8, True, f"iavsia{i}", 0, 0)
+            chessGame.loopGameIaxIA(3)
+
     else:
         corSelecionada = int(
             input("Digite a cor que deseja jogar (1 para branco e 0 para preto): "))

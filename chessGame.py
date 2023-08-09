@@ -238,7 +238,7 @@ class ChessGame:
                             self.quadrado_selecionado = None
                             self.movimentos_validos = []
 
-    def salvarArquivoLog(self):
+    def salvarArquivoLog(self, ia):
         print(self.nome_jogador)
         try:
             with open(f"testes/{self.nome_jogador}.txt", "w") as file:
@@ -259,10 +259,20 @@ class ChessGame:
                 for i in range(len(self.jogadas_pretas)):
                     file.write(str(self.jogadas_pretas[i]))
                     file.write(f", {self.scores_brancas[i]}\n")
-                file.write("debug_info_ia:\n")
-                for i in range(len(self.debug_info_nodes)):
-                    file.write(
-                        f"nós: {self.debug_info_nodes[i]}, tempo: {self.debug_info_time[i]}\n")
+                if ia:
+                    file.write("debug_info_ia_brancos:\n")
+                    for i in range(len(self.debug_info_nodes)):
+                        file.write(
+                            f"nós: {self.debug_info_nodes[i][0]}, tempo: {self.debug_info_time[i][0]}\n")
+                    file.write("debug_info_ia_pretos:\n")
+                    for i in range(len(self.debug_info_nodes)):
+                        file.write(
+                            f"nós: {self.debug_info_nodes[i][1]}, tempo: {self.debug_info_time[i][1]}\n")
+                else:
+                    file.write("debug_info_ia:\n")
+                    for i in range(len(self.debug_info_nodes)):
+                        file.write(
+                            f"nós: {self.debug_info_nodes[i]}, tempo: {self.debug_info_time[i]}\n")
         except Exception as e:
             print(f"Erro ao abrir o arquivo: {e}")
 
@@ -335,6 +345,7 @@ class ChessGame:
                 print("Vez do stockfish")
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 best_move = chess.Move.from_uci(stockfish.get_best_move())
+
                 self.tabuleiro.push(best_move)
                 self.setJogada(self.cor_jogador, best_move)
                 if self.checarEstadoJogo():
@@ -367,6 +378,55 @@ class ChessGame:
             count += 1
 
         self.salvarArquivoLog()
+
+    def loopGameIaxIA(self, profundidade):
+        ia = ChessIA()
+        count = 0
+        while self.rodando:
+            tempo = []
+            nodes = []
+            if self.jogador_atual:
+                print("Vez das brancas")
+                best_move, debug_info = ia.selecionarMovimento(
+                    profundidade, self.tabuleiro)
+
+                nodes.append(debug_info[0])
+                tempo.append(debug_info[1])
+
+                if best_move != None:
+                    self.tabuleiro.push(best_move)
+                    self.setJogada(self.jogador_atual, best_move)
+                if self.checarEstadoJogo():
+                    self.rodando = False
+                else:
+                    self.jogador_atual = not self.jogador_atual
+            else:
+                print("Vez das pretas")
+                best_move, debug_info = ia.selecionarMovimento(
+                    profundidade, self.tabuleiro)
+
+                nodes.append(debug_info[0])
+                tempo.append(debug_info[1])
+
+                if best_move != None:
+                    self.tabuleiro.push(best_move)
+                    self.setJogada(self.jogador_atual, best_move)
+                if self.checarEstadoJogo():
+                    self.rodando = False
+                else:
+                    self.jogador_atual = not self.jogador_atual
+            if self.tabuleiro.can_claim_fifty_moves() or self.tabuleiro.can_claim_draw():
+                self.rodando = False
+                self.ganhador = 2
+
+            self.debug_info_nodes.append(nodes)
+            self.debug_info_time.append(tempo)
+
+            self.imprimirTabuleiro()
+            print()
+            count += 1
+
+        self.salvarArquivoLog(True)
 
     def finalizar(self):
         # Finalizando o pygame

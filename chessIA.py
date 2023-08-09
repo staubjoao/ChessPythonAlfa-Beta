@@ -241,7 +241,9 @@ class ChessIA:
         )
         return list(movimentos_ordenados)
 
-    def quiesce(self, tabuleiro, alpha, beta):
+    def quiesce(self, tabuleiro, alpha, beta, profundidade):
+        if profundidade == 0:
+            return self.avalieTabuleiro(tabuleiro)
         self.teste1 += 1
         self.nodes += 1
         aux = self.avalieTabuleiro(tabuleiro)
@@ -254,7 +256,8 @@ class ChessIA:
         for movimento in tabuleiro.legal_moves:
             if tabuleiro.is_capture(movimento):
                 tabuleiro.push(movimento)
-                avalicao = -self.quiesce(tabuleiro, -beta, -alpha)
+                avalicao = -self.quiesce(tabuleiro, -
+                                         beta, -alpha, profundidade-1)
                 tabuleiro.pop()
                 if avalicao >= beta:
                     return beta
@@ -265,7 +268,7 @@ class ChessIA:
     def minimax(self, profundidade, tabuleiro, alpha, beta):
         self.teste2 += 1
         if profundidade == 0:
-            return self.quiesce(tabuleiro, alpha, beta)
+            return self.quiesce(tabuleiro, alpha, beta, 5)
             # return self.avalieTabuleiro(tabuleiro)
 
         self.nodes += 1
