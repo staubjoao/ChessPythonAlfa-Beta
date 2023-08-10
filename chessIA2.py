@@ -105,7 +105,8 @@ class ChessIA2:
 
         # chegou em um nó folha faz a chamada da função quiesce para verificar as jogadas de captura
         if profundidade == 0:
-            return self.quiesce(tabuleiro, alpha, beta, 5)
+            # return self.quiesce(tabuleiro, alpha, beta, 5)
+            return self.avaliacao_tabuleiro.avalieTabuleiro(tabuleiro)
 
         # se estiver maximizando
         if maximizando:
