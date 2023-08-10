@@ -1,6 +1,7 @@
 import pygame
 import chess
 from chessIA import ChessIA
+from chessIA2 import ChessIA2
 from stockfish import Stockfish
 import os
 
@@ -241,7 +242,7 @@ class ChessGame:
     def salvarArquivoLog(self, ia=False):
         print(self.nome_jogador)
         try:
-            with open(f"avaliacao/{self.nome_jogador}.txt", "w") as file:
+            with open(f"sotockfish_final_1/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -300,7 +301,7 @@ class ChessGame:
             print(i, end="")
 
     def loopGame(self):
-        ia = ChessIA()
+        ia = ChessIA2()
 
         profundidade = 5
         while self.rodando:
@@ -331,7 +332,7 @@ class ChessGame:
         self.finalizar()
 
     def loopGameStockFish(self, profundidade):
-        ia = ChessIA()
+        ia = ChessIA2()
         if os.name == "posix":
             stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=profundidade,
                                   parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
@@ -359,6 +360,7 @@ class ChessGame:
 
                 self.debug_info_nodes.append(debug_info[0])
                 self.debug_info_time.append(debug_info[1])
+                print(f"nodes: {debug_info[0]} tempo: {debug_info[1]}")
                 # passa o tabuleiro para o stockfish
                 stockfish.set_fen_position(self.tabuleiro.fen())
                 top_moves_sf = stockfish.get_top_moves(3)
@@ -374,13 +376,14 @@ class ChessGame:
                 self.ganhador = 2
 
             self.imprimirTabuleiro()
-            print()
+            print(count)
             count += 1
 
         self.salvarArquivoLog()
 
     def loopGameIaxIA(self, profundidade):
         ia = ChessIA()
+        ia2 = ChessIA2()
         count = 0
         while self.rodando:
             tempo = []
@@ -402,7 +405,7 @@ class ChessGame:
                     self.jogador_atual = not self.jogador_atual
             else:
                 print("Vez das pretas")
-                best_move, debug_info = ia.selecionarMovimento(
+                best_move, debug_info = ia2.selecionarMovimento(
                     profundidade, self.tabuleiro)
 
                 nodes.append(debug_info[0])

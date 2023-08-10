@@ -180,6 +180,7 @@ class ChessIA:
         try:
             movimento = chess.polyglot.MemoryMappedReader(
                 "./books/human.bin").weighted_choice(tabuleiro).move()
+            print("Teste")
             return movimento
         except:
             melhor_avaliacao = -float("inf")
@@ -252,8 +253,8 @@ class ChessIA:
         if alpha < aux:
             alpha = aux
 
-        # movimentos = self.ordenarMovimentos(tabuleiro)
-        for movimento in tabuleiro.legal_moves:
+        movimentos = self.ordenarMovimentos(tabuleiro)
+        for movimento in movimentos:
             if tabuleiro.is_capture(movimento):
                 tabuleiro.push(movimento)
                 avalicao = -self.quiesce(tabuleiro, -

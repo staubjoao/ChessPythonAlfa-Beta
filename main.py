@@ -5,22 +5,20 @@ from chessGame import ChessGame
 def main():
     if len(sys.argv) == 2 and str(sys.argv[1]) == "-sf":
         niveis = [250, 500, 1000, 1500]
-        profundidades = [3, 4, 5]
-        for profundidade in profundidades:
-            for nivel in niveis:
-                for i in range(2):
-                    corSelecionada = i
-                    nomeJogador = 'stockfish_' + \
-                        str(nivel) + \
-                        ['_B' if corSelecionada == 1 else '_P'][0]
-                    print(nomeJogador)
-                    if corSelecionada == 1:
-                        chessGame = ChessGame(
-                            700, 750, 8, 8, True, nomeJogador, 1, nivel)
-                    elif corSelecionada == 0:
-                        chessGame = ChessGame(
-                            700, 750, 8, 8, False, nomeJogador, 1, nivel)
-                    chessGame.loopGameStockFish(profundidade)
+        for nivel in niveis:
+            for i in range(2):
+                corSelecionada = i
+                nomeJogador = 'stockfish_' + \
+                    str(nivel) + \
+                    ['_B' if corSelecionada == 1 else '_P'][0]
+                print(nomeJogador)
+                if corSelecionada == 1:
+                    chessGame = ChessGame(
+                        700, 750, 8, 8, True, nomeJogador, 1, nivel)
+                elif corSelecionada == 0:
+                    chessGame = ChessGame(
+                        700, 750, 8, 8, False, nomeJogador, 1, nivel)
+                chessGame.loopGameStockFish(3)
     elif len(sys.argv) == 3 and str(sys.argv[1]) == "-sf":
         nivel = int(sys.argv[2])
         corSelecionada = int(
@@ -35,8 +33,9 @@ def main():
             chessGame = ChessGame(700, 750, 8, 8, False, nomeJogador, 1, nivel)
         chessGame.loopGameStockFish(4)
     elif len(sys.argv) == 2 and str(sys.argv[1]) == "-ia":
-        for i in range(6):
-            chessGame = ChessGame(700, 750, 8, 8, True, f"iavsia{i}", 0, 0)
+        for i in range(1):
+            # IA V2 jogando com as pretas
+            chessGame = ChessGame(700, 750, 8, 8, False, f"iavsia{i}", 0, 0)
             chessGame.loopGameIaxIA(3)
 
     else:
