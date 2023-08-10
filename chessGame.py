@@ -277,10 +277,10 @@ class ChessGame:
         except Exception as e:
             print(f"Erro ao abrir o arquivo: {e}")
 
-    def salvarArquivoLogTeste(self, valor):
+    def salvarArquivoLogTeste(self, profundidade, valor):
         print(self.nome_jogador)
         try:
-            with open(f"stockfish_final_{valor}/{self.nome_jogador}.txt", "w") as file:
+            with open(f"profundidade{profundidade}/stockfish_final_{valor}/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -360,7 +360,8 @@ class ChessGame:
         self.finalizar()
 
     def loopGameStockFish(self, profundidade, id):
-        print(f"stockfish_final_{id}/{self.nome_jogador}.txt")
+        print(
+            f"profundidade{profundidade}/stockfish_final_{id}/{self.nome_jogador}.txt")
         ia = ChessIA2()
         if os.name == "posix":
             stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=profundidade,
@@ -408,7 +409,7 @@ class ChessGame:
             print(count)
             count += 1
 
-        self.salvarArquivoLogTeste(id)
+        self.salvarArquivoLogTeste(profundidade, id)
 
     def loopGameIaxIA(self, profundidade):
         ia = ChessIA()
