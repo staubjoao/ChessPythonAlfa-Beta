@@ -1,22 +1,73 @@
 import os
+import re
 
-diretorio = 'avaliacao\\\\'
 
-for arquivo in os.listdir(diretorio):
-    f = diretorio + arquivo
-    
-    with open(f, 'r') as dados:
-        dados.readline()
-        linha1 = dados.readline()
-        linha2 = dados.readline()
+class chessAnalise:
+    def __init__(self) -> None:
+        self.diretorio = 'avaliacao\\\\'
+        self.arquivo = None
+        self.corIa = None
+        self.corVencedor = None
+        self.vencedor = None
 
-        cor_ia = linha1.split(' ')[-1][:-1]
-        cor_vencedor = linha2.split(' ')[-1][:-1]
 
-        if cor_ia == cor_vencedor:
-            vencedor = 'ia'
+    def abrirArquivo(self, f):
+        self.arquivo = open(f, 'r')
+
+
+    def fecharArquivo(self):
+        self.arquivo.close()
+        
+
+    def setCores(self):
+        self.arquivo.readline()
+        linha1 = self.arquivo.readline()
+        linha2 = self.arquivo.readline()
+        self.corIa = linha1.split(' ')[-1][:-1]
+        self.corVencedor = linha2.split(' ')[-1][:-1]
+
+        if self.corIa == self.corVencedor:
+            self.vencedor = 'ia'
         
         else: 
-            vencedor='jogador'
+            self.vencedor = 'jogador'
 
-        print(vencedor)
+
+    def analisarJogadasIa(self):
+        dados = self.arquivo.read()
+        brancas = {}
+        pretas = {}
+        
+        brancas['inicio'] = re.search('Jogadas brancas:\n', dados).end()
+        brancas['fim'] = re.search('Jogadas pretas:\n', dados).start()
+        pretas['inicio'] = re.search('Jogadas pretas:\n', dados).end()
+        pretas['fim'] = re.search('debug_info_ia:\n', dados).start()
+        debug = re.search('debug_info_ia:\n', dados).end()
+
+        brancas = dados[brancas['inicio']:brancas['fim']]
+        pretas = dados[pretas['inicio']:pretas['fim']]
+        debug = dados[debug]
+
+        print(pretas)
+
+        # for linha in dados:
+        #     if linha[0] == 'J':
+        #         if self.corIa == linha.split(' ')[1][:-2]:
+                    # pass
+                    
+                
+
+    def analisarPartidas(self):
+        for arquivo in os.listdir(self.diretorio):
+            f = self.diretorio + arquivo
+            self.abrirArquivo(f)
+            self.setCores()
+            self.analisarJogadasIa()
+
+            self.fecharArquivo()
+
+if __name__ == '__main__':
+    chessAnalise().analisarPartidas()
+    
+
+
