@@ -1,6 +1,9 @@
 import sys
 from chessGame import ChessGame
 
+from chessIA2 import ChessIA2
+from chessIA3 import ChessIA3
+
 
 def main():
     if len(sys.argv) == 2 and str(sys.argv[1]) == "-sf":
@@ -36,8 +39,17 @@ def main():
     elif len(sys.argv) == 2 and str(sys.argv[1]) == "-ia":
         for i in range(1):
             # IA V2 jogando com as pretas
-            chessGame = ChessGame(700, 750, 8, 8, False, f"iavsia{i}", 0, 0)
-            chessGame.loopGameIaxIA(3)
+            ia = ChessIA2()
+            ia2 = ChessIA3()
+            chessGame = ChessGame(700, 750, 8, 8, False,
+                                  f"ia_v1_B_vs_ia_v2_P", 0, 0)
+            chessGame.loopGameIaxIA(4, ia, ia2)
+
+            ia = ChessIA3()
+            ia2 = ChessIA2()
+            chessGame = ChessGame(700, 750, 8, 8, False,
+                                  f"ia_v2_B_vs_ia_v1_P", 0, 0)
+            chessGame.loopGameIaxIA(3, ia, ia2)
 
     else:
         corSelecionada = int(
