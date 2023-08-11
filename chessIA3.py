@@ -2,13 +2,12 @@ import chess
 import time
 
 from avaliacao2 import Avaliacao2
-from pesto import Pesto
+from pesto import avaliacaoTabuleiro
 
 
 class ChessIA3:
     def __init__(self):
         self.avaliacao_tabuleiro = Avaliacao2()
-        self.pesto_funcs = Pesto()
 
         self.nodes = 0
         self.tempo = 0
@@ -27,7 +26,7 @@ class ChessIA3:
         if not maximizando:
             melhor_avaliacao = float("inf")
         # armazena os movimentos ordenados
-        movimentos = self.avaliacao_tabuleiro.organize_moves(tabuleiro)
+        movimentos = self.avaliacao_tabuleiro.organizarMovimento(tabuleiro)
         # inicializa o melhor movimento encontrado como o primeiro elemento da lista
         melhor_movimento_encontrado = movimentos[0]
 
@@ -62,7 +61,7 @@ class ChessIA3:
     # função para persistir jogadas caso encontre uma jogada de captura
     def quiesce(self, tabuleiro, alpha, beta, profundidade):
         self.nodes += 1
-        stand_pat = self.pesto_funcs.board_evaluation(tabuleiro)
+        stand_pat = avaliacaoTabuleiro(tabuleiro)
         # para não rodar infinitamente
         if profundidade == 0:
             return stand_pat
@@ -76,7 +75,7 @@ class ChessIA3:
             alpha = stand_pat
 
         # para cada movimento atual faz
-        movimentos = self.avaliacao_tabuleiro.organize_moves_quiescence(
+        movimentos = self.avaliacao_tabuleiro.ordenarMovimentoQuiescence(
             tabuleiro)
         for movimento in movimentos:
             # verifica se o movimento é de captura
@@ -120,7 +119,7 @@ class ChessIA3:
         if maximizando:
             # declada o melhor movimento como -infinito
             melhor_movimento = -float("inf")
-            movimentos = self.avaliacao_tabuleiro.organize_moves(tabuleiro)
+            movimentos = self.avaliacao_tabuleiro.organizarMovimento(tabuleiro)
             # para cada movimento
             for movimento in movimentos:
                 # realiza o movimento
@@ -147,7 +146,7 @@ class ChessIA3:
         else:
             # declada o melhor movimento como infinito
             melhor_movimento = float("inf")
-            movimentos = self.avaliacao_tabuleiro.organize_moves(tabuleiro)
+            movimentos = self.avaliacao_tabuleiro.organizarMovimento(tabuleiro)
             # para cada movimento
             for movimento in movimentos:
                 # realiza o movimento

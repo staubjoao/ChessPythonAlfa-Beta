@@ -1,51 +1,59 @@
+# comentado!
 import random
 import chess
 
-from pesto import Pesto
+from pesto import verificaEstagio, avaliarPeca, avaliarCaptura
 
 
 class Avaliacao2:
-    def __init__(self):
-        self.funcs_pesto = Pesto()
 
-    def organize_moves(self, tabuleiro):
-        non_captures = []
-        captures = []
+    # função que organiza os movimentos de forma simples
+    def organizarMovimento(self, tabuleiro):
+        movimentos = []
+        movimentos_captura = []
 
-        for move in tabuleiro.legal_moves:
-            if tabuleiro.is_capture(move):
-                captures.append(move)
+        # para cada movimento presente no tabuleiro
+        for movimento in tabuleiro.legal_moves:
+            # armazena ele no vetor de capturas, se for um movimento de captura
+            if tabuleiro.is_capture(movimento):
+                movimentos_captura.append(movimento)
+            # caso contrario armazena no vetor de movimentos de não captura
             else:
-                non_captures.append(move)
+                movimentos.append(movimento)
 
-        random.shuffle(captures)
-        random.shuffle(non_captures)
-        return captures + non_captures
+        # aleatoriza os dois vetores
+        random.shuffle(movimentos_captura)
+        random.shuffle(movimentos)
+        # retorna com os movimentos de captura vindo primeiro
+        return movimentos_captura + movimentos
 
-    def organize_moves_quiescence(self, tabuleiro):
-        phase = self.funcs_pesto.get_phase(tabuleiro)
+    # função que ordena os movimentos de captura
+    def ordenarMovimentoQuiescence(self, tabuleiro):
+        estagio = verificaEstagio(tabuleiro)
         # filter only important moves for quiescence search
-        captures = filter(lambda move: tabuleiro.is_zeroing(
-            move) or tabuleiro.gives_check(move), tabuleiro.legal_moves)
-        # sort moves by importance
-        moves = sorted(captures, key=lambda move: self.mvv_lva(
-            tabuleiro, move, phase), reverse=(True if tabuleiro.turn == chess.BLACK else False))
-        return moves
+        movimentos_captura = filter(lambda movimento: tabuleiro.is_zeroing(
+            movimento) or tabuleiro.gives_check(movimento), tabuleiro.legal_moves)
+        # ordena os movimentos baseado na sua importancia, utilizando a
+        movimentos = sorted(movimentos_captura, key=lambda movimento: self.avaliarMovimento(
+            tabuleiro, movimento, estagio), reverse=(True if tabuleiro.turn == chess.BLACK else False))
+        return movimentos
 
-    def mvv_lva(self, tabuleiro, move, phase):
-        move_value = 0
+    # função que avalia um movimento com base do estagio atual do jogo
+    def avaliarMovimento(self, tabuleiro, move, estagio):
+        valor_movimento = 0
 
-        # evaluating position
-        from_value = self.funcs_pesto.evaluate_piece(
-            tabuleiro, move.from_square, phase)
-        to_value = self.funcs_pesto.evaluate_piece(
-            tabuleiro, move.to_square, phase)
+        # avalia as posiçẽos do movimento
+        movimento_de = avaliarPeca(
+            tabuleiro, move.from_square, estagio)
+        movimento_para = avaliarPeca(
+            tabuleiro, move.to_square, estagio)
 
-        move_value += to_value - from_value
+        valor_movimento += movimento_para - movimento_de
 
-        # evaluating capture
+        # avalia o movimento de captura
         if tabuleiro.is_capture(move):
-            move_value += self.funcs_pesto.evaluate_capture(
-                tabuleiro, move, phase)
+            valor_movimento += avaliarCaptura(
+                tabuleiro, move, estagio)
 
-        return -move_value if tabuleiro.turn else move_value
+        # se a vez for das brancas retorna o valor positivo, se for das pretas, retorna negativo
+        return -valor_movimento if tabuleiro.turn else valor_movimento

@@ -243,7 +243,7 @@ class ChessGame:
     def salvarArquivoLog(self, ia=False):
         print(self.nome_jogador)
         try:
-            with open(f"sotockfish_final_1/{self.nome_jogador}.txt", "w") as file:
+            with open(f"iav1_vs_iav2/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -412,16 +412,14 @@ class ChessGame:
 
         self.salvarArquivoLogTeste(profundidade, id)
 
-    def loopGameIaxIA(self, profundidade):
-        ia = ChessIA2()
-        ia2 = ChessIA3()
+    def loopGameIaxIA(self, profundidade, iaBrancas, iaPretas):
         count = 0
         while self.rodando:
             tempo = []
             nodes = []
             if self.jogador_atual:
                 print("Vez das brancas")
-                best_move, debug_info = ia.selecionarMovimento(
+                best_move, debug_info = iaBrancas.selecionarMovimento(
                     profundidade, self.tabuleiro)
 
                 nodes.append(debug_info[0])
@@ -436,7 +434,7 @@ class ChessGame:
                     self.jogador_atual = not self.jogador_atual
             else:
                 print("Vez das pretas")
-                best_move, debug_info = ia2.selecionarMovimento(
+                best_move, debug_info = iaPretas.selecionarMovimento(
                     profundidade, self.tabuleiro)
 
                 nodes.append(debug_info[0])
