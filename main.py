@@ -32,7 +32,7 @@ def main():
             chessGame = ChessGame(700, 750, 8, 8, True, nomeJogador, 1, nivel)
         elif corSelecionada == 0:
             chessGame = ChessGame(700, 750, 8, 8, False, nomeJogador, 1, nivel)
-        chessGame.loopGameStockFish(3, 1)
+        chessGame.loopGameStockFish(5, 1)
     elif len(sys.argv) == 2 and str(sys.argv[1]) == "-ia":
         for i in range(1):
             # IA V2 jogando com as pretas

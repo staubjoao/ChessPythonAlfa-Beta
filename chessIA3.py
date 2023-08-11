@@ -62,12 +62,6 @@ class ChessIA3:
     # função para persistir jogadas caso encontre uma jogada de captura
     def quiesce(self, tabuleiro, alpha, beta, profundidade):
         self.nodes += 1
-        if tabuleiro.is_stalemate():
-            return 0
-
-        if tabuleiro.is_checkmate():
-            return -float("inf")
-
         stand_pat = self.pesto_funcs.board_evaluation(tabuleiro)
         # para não rodar infinitamente
         if profundidade == 0:
@@ -78,7 +72,7 @@ class ChessIA3:
             return beta
 
         # alpha update
-        if stand_pat > alpha:
+        if alpha < stand_pat:
             alpha = stand_pat
 
         # para cada movimento atual faz
