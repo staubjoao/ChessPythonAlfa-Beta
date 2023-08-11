@@ -1,0 +1,27 @@
+O jogador jogou até o fim!
+A inteligencia estava jogando com as brancas
+O ganhador foram as pretas
+Jogadas brancas:
+f2f3, 139
+e1f2, 139
+d1e1, 139
+f2g3, 139
+g3f2, 139
+f2g3, 139
+e1f2, 139
+Jogadas pretas:
+g8f6, 139
+d7d5, 139
+d5d4, 139
+d8d6, 139
+e7e5, 139
+g7g5, 139
+f6h5, 39
+debug_info_ia:
+nós: 1285995, tempo: 176.7144157886505
+nós: 1303058, tempo: 193.90733003616333
+nós: 1687911, tempo: 297.0425488948822
+nós: 1596454, tempo: 267.2042644023895
+nós: 33300, tempo: 3.075800657272339
+nós: 3155527, tempo: 558.1772508621216
+nós: 1959176, tempo: 349.2547798156738
