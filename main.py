@@ -4,24 +4,22 @@ from chessGame import ChessGame
 
 def main():
     if len(sys.argv) == 2 and str(sys.argv[1]) == "-sf":
-        profundidades = [3, 4]
         niveis = [250, 500, 1000]
-        for profund in profundidades:
-            for j in range(5):
-                for nivel in niveis:
-                    for i in range(2):
-                        corSelecionada = i
-                        nomeJogador = 'stockfish_' + \
-                            str(nivel) + \
-                            ['_B' if corSelecionada == 1 else '_P'][0]
-                        print(nomeJogador)
-                        if corSelecionada == 1:
-                            chessGame = ChessGame(
-                                700, 750, 8, 8, True, nomeJogador, 1, nivel)
-                        elif corSelecionada == 0:
-                            chessGame = ChessGame(
-                                700, 750, 8, 8, False, nomeJogador, 1, nivel)
-                        chessGame.loopGameStockFish(profund, j+1)
+        for j in range(10):
+            for nivel in niveis:
+                for i in range(2):
+                    corSelecionada = i
+                    nomeJogador = 'stockfish_' + \
+                        str(nivel) + \
+                        ['_B' if corSelecionada == 1 else '_P'][0]
+                    print(nomeJogador)
+                    if corSelecionada == 1:
+                        chessGame = ChessGame(
+                            700, 750, 8, 8, True, nomeJogador, 1, nivel)
+                    elif corSelecionada == 0:
+                        chessGame = ChessGame(
+                            700, 750, 8, 8, False, nomeJogador, 1, nivel)
+                    chessGame.loopGameStockFish(5, j+1)
     elif len(sys.argv) == 3 and str(sys.argv[1]) == "-sf":
         nivel = int(sys.argv[2])
         corSelecionada = int(
@@ -34,7 +32,7 @@ def main():
             chessGame = ChessGame(700, 750, 8, 8, True, nomeJogador, 1, nivel)
         elif corSelecionada == 0:
             chessGame = ChessGame(700, 750, 8, 8, False, nomeJogador, 1, nivel)
-        chessGame.loopGameStockFish(4, 5)
+        chessGame.loopGameStockFish(3, 1)
     elif len(sys.argv) == 2 and str(sys.argv[1]) == "-ia":
         for i in range(1):
             # IA V2 jogando com as pretas

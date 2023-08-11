@@ -256,55 +256,6 @@ class Avaliacao:
         # retorna o valor do mapeamento onde a pela se encontra
         return mapeamento[square]
 
-    # https://www.chessprogramming.org/PeSTO%27s_Evaluation_Function
-
-    # # função que avalia uma peça
-    # def avaliePeca(self, peca, square, fim_de_jogo):
-    #     # armazena o tipo da peça
-    #     tipo_peca = peca.piece_type
-    #     mapeamento = []
-    #     # ao depender da tipo da peça e da cor da mesma, armazena em mapeamento o vetor que equivale ao tipo da peça
-    #     # no caso se for preta armazena a lista invertida
-    #     if tipo_peca == chess.PAWN:
-    #         if peca.color == chess.WHITE:
-    #             mapeamento = self.tabuleiro_peao
-    #         else:
-    #             mapeamento = list(reversed(self.tabuleiro_peao))
-
-    #     if tipo_peca == chess.KNIGHT:
-    #         mapeamento = self.tabuleiro_cavalo
-
-    #     if tipo_peca == chess.BISHOP:
-    #         if peca.color == chess.WHITE:
-    #             mapeamento = self.tabuleiro_bispo
-    #         else:
-    #             mapeamento = list(reversed(self.tabuleiro_bispo))
-
-    #     if tipo_peca == chess.ROOK:
-    #         if peca.color == chess.WHITE:
-    #             mapeamento = self.tabuleiro_torre
-    #         else:
-    #             mapeamento = list(reversed(self.tabuleiro_torre))
-
-    #     if tipo_peca == chess.QUEEN:
-    #         mapeamento = self.tabuleiro_rainha
-
-    #     if tipo_peca == chess.KING:
-    #         # no caso do rei, que tem valores diferentes para o fim de jogo armazena vetores diferentes caso estejá no fim
-    #         if fim_de_jogo:
-    #             if peca.color == chess.WHITE:
-    #                 mapeamento = self.tabuleiro_rei_final
-    #             else:
-    #                 mapeamento = list(reversed(self.tabuleiro_rei_final))
-    #         else:
-    #             if peca.color == chess.WHITE:
-    #                 mapeamento = self.tabuleiro_rei
-    #             else:
-    #                 mapeamento = list(reversed(self.tabuleiro_rei))
-
-    #     # retorna o valor do mapeamento onde a pela se encontra
-    #     return mapeamento[square]
-
     # função para avaliação do tabuleiro como um todo
     def avalieTabuleiro(self, tabuleiro):
         # verifica o checkmate, se sim retorna -inf ou inf, depende da cor atual

@@ -2,6 +2,7 @@ import pygame
 import chess
 from chessIA import ChessIA
 from chessIA2 import ChessIA2
+from chessIA3 import ChessIA3
 from stockfish import Stockfish
 import os
 
@@ -280,7 +281,7 @@ class ChessGame:
     def salvarArquivoLogTeste(self, profundidade, valor):
         print(self.nome_jogador)
         try:
-            with open(f"profundidade{profundidade}/stockfish_final_{valor}/{self.nome_jogador}.txt", "w") as file:
+            with open(f"stockfish_final_{valor}/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -329,7 +330,7 @@ class ChessGame:
             print(i, end="")
 
     def loopGame(self):
-        ia = ChessIA2()
+        ia = ChessIA3()
 
         profundidade = 5
         while self.rodando:
@@ -361,8 +362,8 @@ class ChessGame:
 
     def loopGameStockFish(self, profundidade, id):
         print(
-            f"profundidade{profundidade}/stockfish_final_{id}/{self.nome_jogador}.txt")
-        ia = ChessIA2()
+            f"stockfish_final_{id}/{self.nome_jogador}.txt")
+        ia = ChessIA3()
         if os.name == "posix":
             stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=profundidade,
                                   parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
@@ -412,8 +413,8 @@ class ChessGame:
         self.salvarArquivoLogTeste(profundidade, id)
 
     def loopGameIaxIA(self, profundidade):
-        ia = ChessIA()
-        ia2 = ChessIA2()
+        ia = ChessIA2()
+        ia2 = ChessIA3()
         count = 0
         while self.rodando:
             tempo = []

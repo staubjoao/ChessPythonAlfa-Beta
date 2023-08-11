@@ -1,11 +1,14 @@
 import chess
 import time
-from avaliacao import Avaliacao
+
+from avaliacao2 import Avaliacao2
+from pesto import Pesto
 
 
-class ChessIA2:
+class ChessIA3:
     def __init__(self):
-        self.avaliacao_tabuleiro = Avaliacao()
+        self.avaliacao_tabuleiro = Avaliacao2()
+        self.pesto_funcs = Pesto()
 
         self.nodes = 0
         self.tempo = 0
@@ -24,7 +27,7 @@ class ChessIA2:
         if not maximizando:
             melhor_avaliacao = float("inf")
         # armazena os movimentos ordenados
-        movimentos = self.avaliacao_tabuleiro.ordenarMovimentos(tabuleiro)
+        movimentos = self.avaliacao_tabuleiro.organize_moves(tabuleiro)
         # inicializa o melhor movimento encontrado como o primeiro elemento da lista
         melhor_movimento_encontrado = movimentos[0]
 
@@ -58,21 +61,29 @@ class ChessIA2:
 
     # função para persistir jogadas caso encontre uma jogada de captura
     def quiesce(self, tabuleiro, alpha, beta, profundidade):
+        self.nodes += 1
+        if tabuleiro.is_stalemate():
+            return 0
+
+        if tabuleiro.is_checkmate():
+            return -float("inf")
+
+        stand_pat = self.pesto_funcs.board_evaluation(tabuleiro)
         # para não rodar infinitamente
         if profundidade == 0:
-            return self.avaliacao_tabuleiro.avalieTabuleiro(tabuleiro)
-        self.nodes += 1
-        # avalia o tabuleiro
-        avalicao = self.avaliacao_tabuleiro.avalieTabuleiro(tabuleiro)
-        # caso a avaliação seja maior ou igual a beta retorna beta
-        if avalicao >= beta:
-            return beta
-        # caso a avaliação seja maior doque alpha, alpha passa a valer a avaliação
-        if avalicao > alpha:
-            alpha = avalicao
+            return stand_pat
 
-        movimentos = self.avaliacao_tabuleiro.ordenarMovimentos(tabuleiro)
+        # beta-cutoff
+        if stand_pat >= beta:
+            return beta
+
+        # alpha update
+        if stand_pat > alpha:
+            alpha = stand_pat
+
         # para cada movimento atual faz
+        movimentos = self.avaliacao_tabuleiro.organize_moves_quiescence(
+            tabuleiro)
         for movimento in movimentos:
             # verifica se o movimento é de captura
             if tabuleiro.is_capture(movimento):
@@ -103,6 +114,9 @@ class ChessIA2:
             else:
                 return float("inf")
 
+        if tabuleiro.is_stalemate():
+            return 0
+
         # chegou em um nó folha faz a chamada da função quiesce para verificar as jogadas de captura
         if profundidade == 0:
             return self.quiesce(tabuleiro, alpha, beta, 3)
@@ -112,7 +126,7 @@ class ChessIA2:
         if maximizando:
             # declada o melhor movimento como -infinito
             melhor_movimento = -float("inf")
-            movimentos = self.avaliacao_tabuleiro.ordenarMovimentos(tabuleiro)
+            movimentos = self.avaliacao_tabuleiro.organize_moves(tabuleiro)
             # para cada movimento
             for movimento in movimentos:
                 # realiza o movimento
@@ -139,7 +153,7 @@ class ChessIA2:
         else:
             # declada o melhor movimento como infinito
             melhor_movimento = float("inf")
-            movimentos = self.avaliacao_tabuleiro.ordenarMovimentos(tabuleiro)
+            movimentos = self.avaliacao_tabuleiro.organize_moves(tabuleiro)
             # para cada movimento
             for movimento in movimentos:
                 # realiza o movimento
