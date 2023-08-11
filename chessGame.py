@@ -243,7 +243,7 @@ class ChessGame:
     def salvarArquivoLog(self, ia=False):
         print(self.nome_jogador)
         try:
-            with open(f"iav1_vs_iav2/{self.nome_jogador}.txt", "w") as file:
+            with open(f"avaliacao/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -332,7 +332,7 @@ class ChessGame:
     def loopGame(self):
         ia = ChessIA3()
 
-        profundidade = 5
+        profundidade = 3
         while self.rodando:
             if self.cor_jogador == self.jogador_atual:
                 self.getJogadaHumano()
