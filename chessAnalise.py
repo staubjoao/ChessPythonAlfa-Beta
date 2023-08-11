@@ -1,5 +1,6 @@
 import os
 import re
+from stockfish import Stockfish
 
 
 class chessAnalise:
@@ -48,13 +49,8 @@ class chessAnalise:
         pretas = dados[pretas['inicio']:pretas['fim']]
         debug = dados[debug]
 
-        print(pretas)
+        
 
-        # for linha in dados:
-        #     if linha[0] == 'J':
-        #         if self.corIa == linha.split(' ')[1][:-2]:
-                    # pass
-                    
                 
 
     def analisarPartidas(self):
