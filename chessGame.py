@@ -1,19 +1,17 @@
 import pygame
 import chess
 from chessIA import ChessIA
-from chessIA2 import ChessIA2
-from chessIA3 import ChessIA3
 from stockfish import Stockfish
 import os
-
-LIGHT_COLOR = (107, 142, 35)
-DARK_COLOR = (85, 107, 47)
-SELECTED_COLOR = (0, 255, 0)
-VALID_MOVE_COLOR = (100, 100, 100)
 
 
 class ChessGame:
     def __init__(self, largura, altura, linhas, colunas, cor_jogador, nome_jogador, vs_stockfish, nivel_stockfish):
+        self.cor_clara = (121, 72, 57)
+        self.cor_escura = (93, 50, 49)
+        self.cor_selecionado = (212, 61, 61)
+        self.cor_movimento_valido = (89, 207, 187)
+
         self.largura = largura
         self.altura = altura
         self.linhas = linhas
@@ -47,7 +45,7 @@ class ChessGame:
         pecas = ["wp", "wr", "wn", "wb", "wq",
                  "wk", "bp", "br", "bn", "bb", "bq", "bk"]
         for p in pecas:
-            self.imagens_pecas[p] = pygame.image.load(f"images/{p}.png")
+            self.imagens_pecas[p] = pygame.image.load(f"imagens_pecas/{p}.png")
 
     def getMovimentosValidos(self):
         self.movimentos_validos = []
@@ -135,28 +133,28 @@ class ChessGame:
         font = pygame.font.Font(None, 36)
         button_text = font.render("Desistir", True, (255, 255, 255))
         button_rect = button_text.get_rect(
-            center=(self.largura // 2, self.altura - 30))
+            center=(self.largura // 2, self.altura - 20))
         pygame.draw.rect(self.screen, (255, 0, 0), button_rect)
         self.screen.blit(button_text, button_rect)
 
     def desenharTabuleiro(self):
         for row in range(self.linhas):
             for col in range(self.colunas):
-                square_color = LIGHT_COLOR if (
-                    row + col) % 2 == 0 else DARK_COLOR
+                square_color = self.cor_clara if (
+                    row + col) % 2 == 0 else self.cor_escura
                 pygame.draw.rect(self.screen, square_color, (col * self.tamanho_quadrado,
                                                              row * self.tamanho_quadrado, self.tamanho_quadrado, self.tamanho_quadrado))
 
                 # Destacar o quadrado selecionado
                 if self.quadrado_selecionado and chess.square(col, self.linhas - 1 - row) == self.quadrado_selecionado:
-                    pygame.draw.rect(self.screen, SELECTED_COLOR, (col * self.tamanho_quadrado,
-                                                                   row * self.tamanho_quadrado, self.tamanho_quadrado, self.tamanho_quadrado))
+                    pygame.draw.rect(self.screen, self.cor_selecionado, (col * self.tamanho_quadrado,
+                                                                         row * self.tamanho_quadrado, self.tamanho_quadrado, self.tamanho_quadrado))
 
                 # Destacar as posições válidas para movimento com círculos
                 if chess.square(col, self.linhas - 1 - row) in self.movimentos_validos:
                     circle_center = (col * self.tamanho_quadrado + self.tamanho_quadrado //
                                      2, row * self.tamanho_quadrado + self.tamanho_quadrado // 2)
-                    pygame.draw.circle(self.screen, VALID_MOVE_COLOR,
+                    pygame.draw.circle(self.screen, self.cor_movimento_valido,
                                        circle_center, self.tamanho_quadrado // 4)
 
                 # Desenhar as peças no tabuleiro
@@ -240,10 +238,10 @@ class ChessGame:
                             self.quadrado_selecionado = None
                             self.movimentos_validos = []
 
-    def salvarArquivoLog(self, ia=False):
+    def salvarArquivoLog(self):
         print(self.nome_jogador)
         try:
-            with open(f"avaliacao/{self.nome_jogador}.txt", "w") as file:
+            with open(f"testes/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
@@ -261,24 +259,14 @@ class ChessGame:
                 for i in range(len(self.jogadas_pretas)):
                     file.write(str(self.jogadas_pretas[i]))
                     file.write(f", {self.scores_brancas[i]}\n")
-                if ia:
-                    file.write("debug_info_ia_brancos:\n")
-                    for i in range(len(self.debug_info_nodes)):
-                        file.write(
-                            f"nós: {self.debug_info_nodes[i][0]}, tempo: {self.debug_info_time[i][0]}\n")
-                    file.write("debug_info_ia_pretos:\n")
-                    for i in range(len(self.debug_info_nodes)):
-                        file.write(
-                            f"nós: {self.debug_info_nodes[i][1]}, tempo: {self.debug_info_time[i][1]}\n")
-                else:
-                    file.write("debug_info_ia:\n")
-                    for i in range(len(self.debug_info_nodes)):
-                        file.write(
-                            f"nós: {self.debug_info_nodes[i]}, tempo: {self.debug_info_time[i]}\n")
+                file.write("debug_info_ia:\n")
+                for i in range(len(self.debug_info_nodes)):
+                    file.write(
+                        f"nós: {self.debug_info_nodes[i]}, tempo: {self.debug_info_time[i]}\n")
         except Exception as e:
             print(f"Erro ao abrir o arquivo: {e}")
 
-    def salvarArquivoLogTeste(self, profundidade, valor):
+    def salvarArquivoLogTeste(self, valor):
         print(self.nome_jogador)
         try:
             with open(f"stockfish_final_{valor}/{self.nome_jogador}.txt", "w") as file:
@@ -329,10 +317,9 @@ class ChessGame:
         for i in tabuleiro_str:
             print(i, end="")
 
-    def loopGame(self):
-        ia = ChessIA3()
+    def loopGame(self, profundidade):
+        ia = ChessIA()
 
-        profundidade = 3
         while self.rodando:
             if self.cor_jogador == self.jogador_atual:
                 self.getJogadaHumano()
@@ -361,9 +348,7 @@ class ChessGame:
         self.finalizar()
 
     def loopGameStockFish(self, profundidade, id):
-        print(
-            f"stockfish_final_{id}/{self.nome_jogador}.txt")
-        ia = ChessIA3()
+        ia = ChessIA()
         if os.name == "posix":
             stockfish = Stockfish(path='./stockfish_linux/stockfish-ubuntu-x86-64-avx2', depth=profundidade,
                                   parameters={"Threads": 4, "Minimum Thinking Time": 300, 'Hash': 2048})
@@ -410,55 +395,7 @@ class ChessGame:
             print(count)
             count += 1
 
-        self.salvarArquivoLogTeste(profundidade, id)
-
-    def loopGameIaxIA(self, profundidade, iaBrancas, iaPretas):
-        count = 0
-        while self.rodando:
-            tempo = []
-            nodes = []
-            if self.jogador_atual:
-                print("Vez das brancas")
-                best_move, debug_info = iaBrancas.selecionarMovimento(
-                    profundidade, self.tabuleiro)
-
-                nodes.append(debug_info[0])
-                tempo.append(debug_info[1])
-
-                if best_move != None:
-                    self.tabuleiro.push(best_move)
-                    self.setJogada(self.jogador_atual, best_move)
-                if self.checarEstadoJogo():
-                    self.rodando = False
-                else:
-                    self.jogador_atual = not self.jogador_atual
-            else:
-                print("Vez das pretas")
-                best_move, debug_info = iaPretas.selecionarMovimento(
-                    profundidade, self.tabuleiro)
-
-                nodes.append(debug_info[0])
-                tempo.append(debug_info[1])
-
-                if best_move != None:
-                    self.tabuleiro.push(best_move)
-                    self.setJogada(self.jogador_atual, best_move)
-                if self.checarEstadoJogo():
-                    self.rodando = False
-                else:
-                    self.jogador_atual = not self.jogador_atual
-            if self.tabuleiro.can_claim_fifty_moves() or self.tabuleiro.can_claim_draw():
-                self.rodando = False
-                self.ganhador = 2
-
-            self.debug_info_nodes.append(nodes)
-            self.debug_info_time.append(tempo)
-
-            self.imprimirTabuleiro()
-            print()
-            count += 1
-
-        self.salvarArquivoLog(True)
+        self.salvarArquivoLogTeste(id)
 
     def finalizar(self):
         # Finalizando o pygame
