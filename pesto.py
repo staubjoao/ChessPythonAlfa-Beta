@@ -171,8 +171,9 @@ total_estagio = peao_estagio*16 + cavalo_estagio*4 + \
     bispo_estagio*4 + torre_estagio*4 + rainha_estagio*2
 
 
-def countPecas(tabuleiro):  # função que retorna o número de peças disponiveis no tabuleiro
-    # realiza a contagem de cada peça presente no tabuleiro, das brancas e das pretas
+# calcula estagio atual do jogo a partir do número de peças
+def verificaEstagio(tabuleiro):
+    # realiza a contagem das peças
     wp = len(tabuleiro.pieces(chess.PAWN, chess.WHITE))
     wn = len(tabuleiro.pieces(chess.KNIGHT, chess.WHITE))
     wb = len(tabuleiro.pieces(chess.BISHOP, chess.WHITE))
@@ -184,8 +185,8 @@ def countPecas(tabuleiro):  # função que retorna o número de peças disponive
     br = len(tabuleiro.pieces(chess.ROOK, chess.BLACK))
     bq = len(tabuleiro.pieces(chess.QUEEN, chess.BLACK))
 
-    # retorna uma lista de tuplas que contém a quantidade de cada peça e o estagio
-    return [
+    # cria um vetor de tuplas, contendo a contagem e o valor de estagio da peça
+    pecas = [
         (wp, peao_estagio),
         (bp, peao_estagio),
         (wn, cavalo_estagio),
@@ -197,11 +198,6 @@ def countPecas(tabuleiro):  # função que retorna o número de peças disponive
         (wq, rainha_estagio),
         (bq, rainha_estagio)]
 
-
-# calcula estagio atual do jogo a partir do número de peças
-def verificaEstagio(tabuleiro):
-    # recebe a contagem das peças
-    pecas = countPecas(tabuleiro)
     # variavel estagio é inicializada com o valor calculado anteriormente, fora da função
     estagio = total_estagio
 
