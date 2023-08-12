@@ -7,8 +7,8 @@ def main():
     altura = 750
 
     if len(sys.argv) == 2 and str(sys.argv[1]) == "-sf":
-        niveis = [250, 500, 1000]
-        for j in range(5):
+        niveis = [400, 700, 1000, 1300]
+        for j in range(3):
             for nivel in niveis:
                 for i in range(2):
                     corSelecionada = i
@@ -22,7 +22,7 @@ def main():
                     elif corSelecionada == 0:
                         chessGame = ChessGame(
                             largura, altura, 8, 8, False, nomeJogador, 1, nivel)
-                    chessGame.loopGameStockFish(5, j+1)
+                    chessGame.loopGameStockFish(4, j+1)
     elif len(sys.argv) == 3 and str(sys.argv[1]) == "-sf":
         nivel = int(sys.argv[2])
         corSelecionada = int(
@@ -37,7 +37,7 @@ def main():
         elif corSelecionada == 0:
             chessGame = ChessGame(largura, altura, 8, 8,
                                   False, nomeJogador, 1, nivel)
-        chessGame.loopGameStockFish(5, 1)
+        chessGame.loopGameStockFish(4, 1)
     else:
         corSelecionada = int(
             input("Digite a cor que deseja jogar (1 para branco e 0 para preto): "))
@@ -53,7 +53,7 @@ def main():
 
         chessGame.abrirTela()
         chessGame.desenharTabuleiro()
-        chessGame.loopGame(5)
+        chessGame.loopGame(4)
         chessGame.finalizar()
 
 

@@ -40,10 +40,10 @@ class ChessIA:
     # função que ordena os movimentos de captura
     def ordenarMovimentoQuiescence(self, tabuleiro):
         estagio = verificaEstagio(tabuleiro)
-        # filter only important moves for quiescence search
+        # filtra por movimentos importantes para a busca quiescence
         movimentos_captura = filter(lambda movimento: tabuleiro.is_zeroing(
             movimento) or tabuleiro.gives_check(movimento), tabuleiro.legal_moves)
-        # ordena os movimentos baseado na sua importancia, utilizando a
+        # ordena os movimentos baseado na sua importancia
         movimentos = sorted(movimentos_captura, key=lambda movimento: self.avaliarMovimento(
             tabuleiro, movimento, estagio), reverse=(True if tabuleiro.turn == chess.BLACK else False))
         return movimentos
@@ -73,7 +73,7 @@ class ChessIA:
         # inicia a cache, para não calcular o que não precisa
         manager = Manager()
         cache = manager.dict()
-        # inicial o node e o tempo
+        # inicializa o contador de nodes e o tempo
         self.nodes = 0
         t0 = time.time()
 
@@ -185,7 +185,7 @@ class ChessIA:
                     # realiza a poda
                     return beta, None
 
-        # initializing melhor_pontuacao e melhor_movimento, como nulo e -infinito
+        # inicializando melhor_pontuacao e melhor_movimento, como nulo e -infinito
         melhor_movimento = None
         melhor_pontuacao = float("-inf")
         movimentos = self.organizarMovimento(tabuleiro)
@@ -194,7 +194,7 @@ class ChessIA:
         for movimento in movimentos:
             # realiza o movimento
             tabuleiro.push(movimento)
-            # armazena a pontuação (chama recursiva da função)
+            # armazena a pontuação (chamada recursiva da função)
             pontuacao_tabuleiro = - \
                 self.minimax(tabuleiro, profundidade-1, movimento_nulo,
                              cache, -beta, -alpha)[0]
@@ -226,7 +226,7 @@ class ChessIA:
                 melhor_movimento = movimento
 
             # definindo a variável alfa para fazer a poda
-            # receme o maior valor entre alpha e pontuacao_tabuleiro
+            # recebe o maior valor entre alpha e pontuacao_tabuleiro
             alpha = max(alpha, pontuacao_tabuleiro)
 
             # poda alfa beta quando já foi encontrada uma solução que é pelo menos tão boa quanto a atual

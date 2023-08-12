@@ -1,9 +1,0 @@
-O jogador desistiu!
-A inteligencia estava jogando com as pretas
-O ganhador foram as pretas
-Jogadas brancas:
-g2g4, 139
-Jogadas pretas:
-d7d5, 139
-debug_info_ia:
-nós: 94418, tempo: 24.260234117507935

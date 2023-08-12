@@ -269,7 +269,7 @@ class ChessGame:
     def salvarArquivoLogTeste(self, valor):
         print(self.nome_jogador)
         try:
-            with open(f"stockfish_final_{valor}/{self.nome_jogador}.txt", "w") as file:
+            with open(f"stockfish_r_{valor}/{self.nome_jogador}.txt", "w") as file:
                 cor_inteligencia = "pretas" if self.cor_jogador else "brancas"
                 cor_ganhador = "brancas" if self.ganhador == 1 else "pretas" if self.ganhador == 0 else "empate"
                 if self.button_clicked:
