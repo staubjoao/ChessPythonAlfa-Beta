@@ -6,7 +6,8 @@ import pandas as pd
 
 class chessAnalise:
     def __init__(self) -> None:
-        self.diretorio = 'avaliacao\\\\'
+        # self.diretorio = 'resultados_stockfish\\'
+        self.diretorio = 'resultados_stockfish\\stockfish_r_1\\'
         self.arquivo = None
         self.corIa = None
         self.corVencedor = None
@@ -15,10 +16,18 @@ class chessAnalise:
         self.jogadasPretas = None
         self.metadata = None
         self.dictJogadas = {'jogada': [],
-                       'melhoresJogadas': []}
+                            'melhoresJogadas': []}
         
-
-
+        self.dadosCompletos = { 'corIa': [], 
+                                'vencedor': [], 
+                                'adversario': [], 
+                                'qtdLances': [], 
+                                'lancesIdeais': [], 
+                                'mediaNos': [], 
+                                'mediaTempo': [], 
+                                'medianaTempo': [], 
+                                'stdTempo': [] }
+    
     def abrirArquivo(self, f):
         self.arquivo = open(f, 'r')
 
@@ -35,13 +44,13 @@ class chessAnalise:
         self.corVencedor = linha2.split(' ')[-1][:-1]
 
         if self.corVencedor == 'empate':
-            self.vencedor = ['empate', 'empate']
+            self.vencedor = 'empate'
 
-        if self.corIa == self.corVencedor:
-            self.vencedor = ['ia', self.corVencedor]
+        elif self.corIa == self.corVencedor:
+            self.vencedor = 'ia'
         
         else: 
-            self.vencedor = ['jogador', self.corVencedor]
+            self.vencedor = 'jogador'
 
 
     def setJogadas(self):
@@ -67,12 +76,19 @@ class chessAnalise:
         tabuleiro = chess.Board()
         stockfish.set_fen_position(tabuleiro.fen())
 
+        if len(self.jogadasBrancas) != len(self.jogadasPretas):
+            # if len(self.jogadasBrancas) > len(self.jogadasPretas):
+            self.jogadasBrancas = self.jogadasBrancas[:-1]
+            # else:
+            #     self.jogadasPretas = self.jogadasPretas[:-1]
+
         for jogadaBranca, jogadaPreta in zip(self.jogadasBrancas, self.jogadasPretas):
             if jogadaBranca == '' or jogadaPreta == '':
                 break
-            
+
             jogadaBranca = jogadaBranca.split(',')[0]
             jogadaPreta = jogadaPreta.split(',')[0]
+
 
             
             if self.corIa == 'brancas':
@@ -103,14 +119,27 @@ class chessAnalise:
         self.metadata = metadata
 
     def construirDataFrameLances(self):
+        print(len(self.metadata))
+        print(len(self.dictJogadas['jogada']))
+        print(len(self.dictJogadas['melhoresJogadas']))
         df = pd.DataFrame(self.metadata)
         df['jogadas'] = self.dictJogadas['jogada']
         df['melhoresJogadas'] = self.dictJogadas['melhoresJogadas']
 
         return df
 
-    def dadosStockfish(self):
-        pass
+    def dadosStockfish(self, nome):
+        nome = nome.split('_')
+        
+        if nome[0] == 'stockfish':
+            nivel = int(nome[1])
+
+        else:
+            nivel = 'humano'
+
+        return nivel
+        
+        
 
     def dadosPartida(self, df, nome, corIa, vencedor):
         lances = df.shape[0]
@@ -123,40 +152,50 @@ class chessAnalise:
         cont = 0
 
         for jogada, melhores in zip(df['jogadas'], df['melhoresJogadas']):
-            if re.search(rf'{jogada}', melhores):
-                cont += 1
-        
-        nivel = self.dadosStockfish()
-    
-        dictDados = {
-            'corIa': corIa,
-            'vencedor': vencedor,
-            'qtdLances': lances,
-            'lancesIdeais': cont,
-            'mediaNos': mediaNos,
-            'mediaTempo': mediaTempo,
-            'medianaTempo': medianaTempo,
-            'stdTempo': stdTempo,
-        }
+            if type(melhores) == str:
+                if re.search(rf'{jogada}', melhores):
+                    cont += 1
+            else:
+                if jogada in melhores:
+                    cont += 1
 
-        return dictDados
+        self.dadosCompletos['corIa'].append(corIa)
+        self.dadosCompletos['vencedor'].append(vencedor)
+        self.dadosCompletos['adversario'].append(self.dadosStockfish(nome))
+        self.dadosCompletos['qtdLances'].append(lances)
+        self.dadosCompletos['lancesIdeais'].append(cont)
+        self.dadosCompletos['mediaNos'].append(mediaNos)
+        self.dadosCompletos['mediaTempo'].append(mediaTempo)
+        self.dadosCompletos['medianaTempo'].append(medianaTempo)
+        self.dadosCompletos['stdTempo'].append(stdTempo)
 
     def analisarPartidas(self):
+        # for pasta in os.listdir(self.diretorio):
+
+            # for arquivo in os.listdir(self.diretorio + pasta + '\\'):
         for arquivo in os.listdir(self.diretorio):
+
+            self.dictJogadas = {'jogada': [],
+                    'melhoresJogadas': []}
             
             f = self.diretorio + arquivo
+            # f = self.diretorio + pasta + '\\' + arquivo
+
             self.abrirArquivo(f)
             self.setCores()
             self.setJogadas()
             self.analisarJogadasIa()
             self.analisarMetadata()
 
-            df = self.construirDataFrame()
-            dictDados = self.dadosPartida(df, arquivo[:-4], self.corIa, self.vencedor)
-            df.to_csv('avaliacaoCSV\\' + arquivo[:-4] + '.csv', index=False)
-
+            df = self.construirDataFrameLances()
+            self.dadosPartida(df, arquivo[:-4], self.corIa, self.vencedor)
+            
             self.fecharArquivo()
-            break
+            print(f)
+
+        df = pd.DataFrame(self.dadosCompletos)
+        df.to_csv('dadosCompletos.csv', index=False)
+            
 
 if __name__ == '__main__':
     chessAnalise().analisarPartidas()
