@@ -1,2 +1,6 @@
 chess==1.7.0
 stockfish==3.28.0
+pandas==2.0.3
+pygame==2.5.0
+seaborn==0.12.2
+regex==2023.6.3

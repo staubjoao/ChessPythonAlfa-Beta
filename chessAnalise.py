@@ -7,8 +7,8 @@ import pandas as pd
 
 class chessAnalise:
     def __init__(self) -> None:
-        self.diretorio = 'resultados_stockfish\\'
-        # self.diretorio = 'resultados_stockfish\\stockfish_r_1\\'
+        self.diretorio = 'resultados\\'
+        # self.diretorio = 'resultados\\stockfish_r_1\\'
         self.arquivo = None
         self.corIa = None
         self.corVencedor = None
@@ -112,7 +112,7 @@ class chessAnalise:
     def construirDataFrameLances(self):
         df = pd.DataFrame(self.metadata)
 
-        if self.corIa == 'brancas' and (self.corVencedor == 'brancas' or self.corVencedor == 'empate'):
+        if self.corIa == 'brancas' and (self.corVencedor == 'brancas' or self.corVencedor == 'empate') and len(self.jogadasBrancas) > len(self.jogadasPretas):
             self.dictJogadas['jogada'].append(' ')
             self.dictJogadas['melhoresJogadas'].append(' ')
 
