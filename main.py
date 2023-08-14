@@ -7,7 +7,7 @@ def main():
     altura = 750
 
     if len(sys.argv) == 2 and str(sys.argv[1]) == "-sf":
-        niveis = [400, 700, 1000, 1300]
+        niveis = [1600, 2000, 2500]
         for j in range(3):
             for nivel in niveis:
                 for i in range(2):
