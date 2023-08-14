@@ -78,7 +78,7 @@ class ChessIA:
         t0 = time.time()
 
         melhor_movimento = self.minimax(
-            tabuleiro, profundidade, self.movimento_nulo, cache)[1]
+            tabuleiro, profundidade, self.movimento_nulo, cache, float("-inf"), float("inf"))[1]
 
         # coleta o tempo para estatistica
         self.tempo = time.time() - t0
@@ -132,7 +132,7 @@ class ChessIA:
         return alpha
 
     # função chave da ingeligencia, minmax com poda alphabeta
-    def minimax(self, tabuleiro, profundidade, movimento_nulo, cache, alpha=float("-inf"), beta=float("inf")):
+    def minimax(self, tabuleiro, profundidade, movimento_nulo, cache, alpha, beta):
         self.nodes += 1
 
         # verificação se o tabuleiro já foi avaliado
