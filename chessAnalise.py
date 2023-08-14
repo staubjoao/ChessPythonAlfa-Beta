@@ -188,7 +188,7 @@ class chessAnalise:
                 self.fecharArquivo()
 
         df = pd.DataFrame(self.dadosCompletos)
-        df.to_csv('dadosCompletos.csv', index=False)
+        df.to_csv('resultadosFinal.csv', index=False)
 
 
 if __name__ == '__main__':
