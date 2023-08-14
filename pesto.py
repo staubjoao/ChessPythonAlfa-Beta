@@ -123,43 +123,24 @@ tabuleiro_rei_final = [
     -27, -11,   4,  13,  14,   4,  -5, -17,
     -53, -34, -21, -11, -28, -14, -24, -43]
 
-# valor das peças começo/fim de jogo
-valor_pecas = {
-    chess.PAWN: 82,
-    chess.KNIGHT: 337,
-    chess.BISHOP: 365,
-    chess.ROOK: 477,
-    chess.QUEEN: 1025,
-    chess.KING: 24000
-}
+# valores para cada peça
+valor_pecas_teste = [
+    82,  # peao
+    337,  # cavalo
+    365,  # bispo
+    477,  # torre
+    1025,  # rainha
+    24000  # rei
+]
 
-# valor das peças para o fim de jogo
-valor_pecas_final = {
-    chess.PAWN: 94,
-    chess.KNIGHT: 281,
-    chess.BISHOP: 297,
-    chess.ROOK: 512,
-    chess.QUEEN: 936,
-    chess.KING: 24000
-}
-
-# armazena os vetores de começo/meio de jogo
-pesto_valores = {
-    chess.PAWN: tabuleiro_peao,
-    chess.KNIGHT: tabuleiro_cavalo,
-    chess.BISHOP: tabuleiro_bispo,
-    chess.ROOK: tabuleiro_torre,
-    chess.QUEEN: tabuleiro_rainha,
-    chess.KING: tabuleiro_rei}
-
-# armazena os vetores de final de jogo
-pesto_valores_final = {
-    chess.PAWN: tabuleiro_peao_final,
-    chess.KNIGHT: tabuleiro_cavalo_final,
-    chess.BISHOP: tabuleiro_bispo_final,
-    chess.ROOK: tabuleiro_torre_final,
-    chess.QUEEN: tabuleiro_rainha_final,
-    chess.KING: tabuleiro_rei_final}
+valor_pecas_final_teste = [
+    94,  # peao
+    281,  # cavalo
+    297,  # bispo
+    512,  # torre
+    936,  # rainha
+    24000  # rei
+]
 
 # explicação dessa conta disponivel aqui: https://www.chessprogramming.org/Tapered_Eval
 peao_estagio = 0
@@ -169,6 +150,68 @@ torre_estagio = 2
 rainha_estagio = 4
 total_estagio = peao_estagio*16 + cavalo_estagio*4 + \
     bispo_estagio*4 + torre_estagio*4 + rainha_estagio*2
+
+
+# retorna o valor da peça
+def valorPeca(peca):
+    peca_comeco_meio = 0
+    peca_fim = 0
+    if peca == chess.PAWN:
+        peca_comeco_meio = valor_pecas_teste[0]
+        peca_fim = valor_pecas_final_teste[0]
+    elif peca == chess.KNIGHT:
+        peca_comeco_meio = valor_pecas_teste[1]
+        peca_fim = valor_pecas_final_teste[1]
+    elif peca == chess.BISHOP:
+        peca_comeco_meio = valor_pecas_teste[2]
+        peca_fim = valor_pecas_final_teste[2]
+    elif peca == chess.ROOK:
+        peca_comeco_meio = valor_pecas_teste[3]
+        peca_fim = valor_pecas_final_teste[3]
+    elif peca == chess.QUEEN:
+        peca_comeco_meio = valor_pecas_teste[4]
+        peca_fim = valor_pecas_final_teste[4]
+    elif peca == chess.KING:
+        peca_comeco_meio = valor_pecas_teste[5]
+        peca_fim = valor_pecas_final_teste[5]
+    return peca_comeco_meio, peca_fim
+
+
+# retorna o valor da peça em determinado quadrado, a partir da tabela
+def valorPesto(peca, quadrado):
+    pesto_comeco_meio = 0
+    pesto_fim = 0
+
+    mapeamento = []
+    mapeamento_final = []
+
+    if peca.piece_type == chess.PAWN:
+        mapeamento = tabuleiro_peao
+        mapeamento_final = tabuleiro_peao_final
+    elif peca.piece_type == chess.KNIGHT:
+        mapeamento = tabuleiro_cavalo
+        mapeamento_final = tabuleiro_cavalo_final
+    elif peca.piece_type == chess.BISHOP:
+        mapeamento = tabuleiro_bispo
+        mapeamento_final = tabuleiro_bispo_final
+    elif peca.piece_type == chess.ROOK:
+        mapeamento = tabuleiro_torre
+        mapeamento_final = tabuleiro_torre_final
+    elif peca.piece_type == chess.QUEEN:
+        mapeamento = tabuleiro_rainha
+        mapeamento_final = tabuleiro_rainha_final
+    elif peca.piece_type == chess.KING:
+        mapeamento = tabuleiro_rei
+        mapeamento_final = tabuleiro_rei_final
+
+    if peca.color == chess.WHITE:
+        pesto_comeco_meio = mapeamento[63-quadrado]
+        pesto_fim = mapeamento_final[63-quadrado]
+    else:
+        pesto_comeco_meio = mapeamento[quadrado]
+        pesto_fim = mapeamento_final[quadrado]
+
+    return pesto_comeco_meio, pesto_fim
 
 
 # calcula estagio atual do jogo a partir do número de peças
@@ -227,18 +270,15 @@ def avaliacaoTabuleiro(tabuleiro):
     for quadrado in range(64):
         peca = tabuleiro.piece_at(quadrado)
         if peca is not None:
-            # se a peça for branca realiza os calculos baseado no tabuleiro invertido
+            val_peca, val_peca_final = valorPeca(peca.piece_type)
+            pesto_valor, pesto_valor_final = valorPesto(peca, quadrado)
             if peca.color == chess.WHITE:
-                aval_meio_b += pesto_valores[peca.piece_type][63 -
-                                                              quadrado] + valor_pecas[peca.piece_type]
-                aval_fim_b += pesto_valores_final[peca.piece_type][63 -
-                                                                   quadrado] + valor_pecas_final[peca.piece_type]
+                aval_meio_b += pesto_valor + val_peca
+                aval_fim_b += pesto_valor_final + val_peca_final
             # se não realiza os calculos no tabuleiro "normal"
             else:
-                aval_meio_p += pesto_valores[peca.piece_type][quadrado] + \
-                    valor_pecas[peca.piece_type]
-                aval_fim_p += pesto_valores_final[peca.piece_type][quadrado] + \
-                    valor_pecas_final[peca.piece_type]
+                aval_meio_p += pesto_valor + val_peca
+                aval_fim_p += pesto_valor_final + val_peca_final
 
     # avalia o tabuleiro com base no estagio local
     avaliacao_meio = 0
@@ -261,18 +301,13 @@ def avaliarPeca(tabuleiro, quadrado, estagio):
     pontuacao_fim = 0
 
     # calcula a pontuacao para o meio e fim d jogo para a peça
-    piece = tabuleiro.piece_at(quadrado)
-    if piece is not None:
-        if piece.color == chess.WHITE:
-            pontuacao_meio += pesto_valores[piece.piece_type][63 -
-                                                              quadrado] + valor_pecas[piece.piece_type]
-            pontuacao_fim += pesto_valores_final[piece.piece_type][63 -
-                                                                   quadrado] + valor_pecas_final[piece.piece_type]
-        else:
-            pontuacao_meio += pesto_valores[piece.piece_type][quadrado] + \
-                valor_pecas[piece.piece_type]
-            pontuacao_fim += pesto_valores_final[piece.piece_type][quadrado] + \
-                valor_pecas_final[piece.piece_type]
+    peca = tabuleiro.piece_at(quadrado)
+    if peca is not None:
+        val_peca, val_peca_final = valorPeca(peca.piece_type)
+        pesto_valor, pesto_valor_final = valorPesto(peca, quadrado)
+
+        pontuacao_meio += pesto_valor + val_peca
+        pontuacao_fim += pesto_valor_final + val_peca_final
 
     # calcula a avaliação
     return ((pontuacao_meio * (256 - estagio)) + (pontuacao_fim * estagio)) / 256
@@ -292,10 +327,11 @@ def avaliarCaptura(tabuleiro, movimento, estagio):
 
     # armazena a diferença entre as duas peças
     if peca_captura is not None and peca_capturada is not None:
-        pontuacao_meio += valor_pecas[peca_capturada] - \
-            valor_pecas[peca_captura]
-        pontuacao_fim += valor_pecas_final[peca_capturada] - \
-            valor_pecas_final[peca_captura]
+        val_capturada, val_capturada_fim = valorPeca(peca_capturada)
+        val_captura, val_captura_fim = valorPeca(peca_captura)
+
+        pontuacao_meio += val_capturada - val_captura
+        pontuacao_fim += val_capturada_fim - val_captura_fim
 
     # calcula a avaliação
     return ((pontuacao_meio * (256 - estagio)) + (pontuacao_fim * estagio)) / 256
